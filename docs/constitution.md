@@ -55,8 +55,8 @@
 |---|---|
 | R01 | KHÔNG tự ý commit hoặc deploy khi chưa được lệnh |
 | R02 | Build local trước, rsync lên VPS |
-| R03 | VPS dir: /var/www/chelien-sop-converter/ |
-| R04 | PM2 name: chelien-sop, port 2023 |
+| R03 | VPS dir: /var/www/mdconvert/ |
+| R04 | PM2 name: mdconvert, port 2023 |
 | R05 | Cần cài pandoc + ghostscript trên VPS trước khi deploy |
 
 ## Coding Rules
