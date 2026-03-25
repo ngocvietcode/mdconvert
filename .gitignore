@@ -11,3 +11,4 @@ outputs/*
 !outputs/.gitkeep
 .claude/settings.local.json
 tsconfig.tsbuildinfo
+.DS_Store
