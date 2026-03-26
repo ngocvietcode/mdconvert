@@ -8,6 +8,11 @@ A self-hosted tool that converts `.docx` and `.pdf` files into clean Markdown op
 
 ---
 
+![Home page](docs/screenshots/Home%20page.png)
+![Settings page](docs/screenshots/Setting%20page.png)
+
+---
+
 ## Features
 
 - **DOCX flow** — Pandoc extracts structure + images → AI Vision describes each image → outputs `full.md` (with image descriptions) + `text-only.md`
