@@ -98,12 +98,41 @@ export async function runPipeline(operationId: string): Promise<void> {
         throw new Error(`Processor '${step.processor}' not found in database.`);
       }
 
+      // Look for Client Overrides
+      let systemPrompt = processor.systemPrompt;
+      let responseSchema = processor.responseSchema;
+      let maxOutputTokens = processor.maxOutputTokens;
+      let temperature = processor.temperature;
+      let modelOverride = processor.modelOverride;
+      let processorConfigStr = processor.processorConfig;
+
+      if (operation.apiKeyId) {
+        const override = await prisma.processorOverride.findUnique({
+          where: {
+            processorId_apiKeyId: {
+              processorId: processor.id,
+              apiKeyId: operation.apiKeyId,
+            },
+          },
+        });
+
+        if (override) {
+          systemPrompt = override.systemPrompt ?? systemPrompt;
+          responseSchema = override.responseSchema ?? responseSchema;
+          maxOutputTokens = override.maxOutputTokens ?? maxOutputTokens;
+          temperature = override.temperature ?? temperature;
+          modelOverride = override.modelOverride ?? modelOverride;
+          processorConfigStr = override.processorConfig ?? processorConfigStr;
+          console.log(`[Pipeline] Applied client override for processor '${step.processor}'`);
+        }
+      }
+
       // Build context
       const variables = step.variables ?? {};
-      const procConfig = processor.processorConfig ? JSON.parse(processor.processorConfig) : {};
+      const procConfig = processorConfigStr ? JSON.parse(processorConfigStr) : {};
 
       // Interpolate variables into system prompt
-      let resolvedPrompt = processor.systemPrompt;
+      let resolvedPrompt = systemPrompt;
       for (const [key, value] of Object.entries(variables)) {
         resolvedPrompt = resolvedPrompt.replace(new RegExp(`\\{\\{${key}\\}\\}`, 'g'), String(value));
       }
@@ -125,13 +154,13 @@ export async function runPipeline(operationId: string): Promise<void> {
         fileName: operation.fileName ?? undefined,
         processorSlug: processor.slug,
         systemPrompt: resolvedPrompt,
-        responseSchema: processor.responseSchema,
+        responseSchema: responseSchema,
         variables,
         outputFormat: operation.outputFormat,
         processorConfig: procConfig,
-        maxOutputTokens: processor.maxOutputTokens,
-        temperature: processor.temperature,
-        modelOverride: processor.modelOverride,
+        maxOutputTokens: maxOutputTokens,
+        temperature: temperature,
+        modelOverride: modelOverride,
       };
 
       // Route to appropriate processor implementation

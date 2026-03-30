@@ -19,6 +19,7 @@ export interface SubmitPipelineParams {
   outputFormat?: string;           // "md" | "html" | "json" — default "md"
   webhookUrl?: string | null;
   idempotencyKey?: string;
+  apiKeyId?: string;
 }
 
 export type SubmitPipelineResult =
@@ -38,6 +39,7 @@ export async function submitPipelineJob(
     outputFormat = 'md',
     webhookUrl,
     idempotencyKey,
+    apiKeyId,
   } = params;
 
   // ── 1. Basic pipeline validation ─────────────────────────────────────────
@@ -172,7 +174,7 @@ export async function submitPipelineJob(
   const operation = await prisma.operation.create({
     data: {
       id:             operationId,
-      apiKeyId:       null,
+      apiKeyId:       apiKeyId ?? null,
       idempotencyKey: idempotencyKey ?? null,
       pipelineJson:   JSON.stringify(pipeline),
       fileName,

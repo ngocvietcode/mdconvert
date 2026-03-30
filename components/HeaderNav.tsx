@@ -3,7 +3,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Home, Clock, Settings, GitCompareArrows, Sparkles, FileText } from 'lucide-react';
+import { Home, Clock, Settings, FileText, SlidersHorizontal } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
 export default function HeaderNav() {
@@ -34,33 +34,7 @@ export default function HeaderNav() {
             <Home className="w-4 h-4" />
             Trang chủ
           </Link>
-          <Link
-            href="/transform"
-            className={`pill-nav-item ${
-              pathname.startsWith('/transform') ? 'pill-nav-active' : 'pill-nav-inactive'
-            }`}
-          >
-            <Clock className="w-4 h-4" />
-            Chuyển đổi
-          </Link>
-          <Link
-            href="/generate"
-            className={`pill-nav-item ${
-              pathname.startsWith('/generate') ? 'pill-nav-active' : 'pill-nav-inactive'
-            }`}
-          >
-            <Sparkles className="w-4 h-4" />
-            Tạo tài liệu
-          </Link>
-          <Link
-            href="/compare"
-            className={`pill-nav-item ${
-              pathname.startsWith('/compare') ? 'pill-nav-active' : 'pill-nav-inactive'
-            }`}
-          >
-            <GitCompareArrows className="w-4 h-4" />
-            So sánh
-          </Link>
+
           <Link
             href="/history"
             className={`pill-nav-item ${
@@ -78,6 +52,15 @@ export default function HeaderNav() {
           >
             <Settings className="w-4 h-4" />
             Cài đặt
+          </Link>
+          <Link
+            href="/overrides"
+            className={`pill-nav-item ${
+              pathname.startsWith('/overrides') ? 'pill-nav-active' : 'pill-nav-inactive'
+            }`}
+          >
+            <SlidersHorizontal className="w-4 h-4" />
+            Overrides
           </Link>
           
           <div className="w-[1px] h-6 bg-border mx-2" />

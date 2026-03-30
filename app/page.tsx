@@ -2,29 +2,36 @@
 // Trang chủ giới thiệu dugate
 
 import Link from 'next/link';
-import { FileText, GitCompareArrows, ArrowRight, Sparkles } from 'lucide-react';
+import { FileText, GitCompareArrows, ArrowRight, Sparkles, ShieldCheck } from 'lucide-react';
 
 const FEATURES = [
   {
-    title: "Chuyển đổi Markdown",
-    description: "Chỉ với một cú kéo thả, chuyển đổi file DOCX, PDF thành định dạng Markdown chuẩn xác. Hỗ trợ mô tả ảnh bằng AI Prompt tùy biến và trích xuất bảng biểu.",
+    title: "Bóc tách & Chuyển đổi (Parser)",
+    description: "Chỉ với một cú kéo thả, chuyển tệp cấu trúc phức tạp (DOCX, PDF) thành Markdown chuẩn xác, xử lý triệt để bảng biểu và biểu đồ theo yêu cầu AI.",
     icon: FileText,
     color: "from-[#00B74F] to-[#008f40]",
     href: "/transform"
   },
   {
-    title: "So sánh Văn bản",
-    description: "Kiểm tra tự động đa biến đối với các văn bản pháp lý, quy định. Phát hiện cực nhanh các điều khoản được thêm mới, sửa đổi hoặc xóa bỏ.",
+    title: "So sánh & Tìm điểm khác (Compare)",
+    description: "Kiểm duyệt tự động đa biến với các văn bản pháp lý, quy định. Tức thời phát hiện các điều khoản được thêm mới, sửa đổi hoặc xóa bỏ so với bản gốc.",
     icon: GitCompareArrows,
     color: "from-[#E00500] to-[#b30400]",
     href: "/compare"
   },
   {
-    title: "Tạo tài liệu AI",
-    description: "Upload tài liệu gốc và mô tả yêu cầu — AI sẽ tự động đọc hiểu toàn bộ nội dung và tạo ra tài liệu mới dạng Markdown hoặc HTML chuyên nghiệp theo đúng prompt.",
+    title: "Phát sinh Văn bản AI (Generate)",
+    description: "Chỉ cần upload tài liệu gốc và nạp prompt mô tả yêu cầu — Hệ thống sẽ tự động tổng hợp toàn bộ tri thức để sinh ra báo cáo, phụ lục chuyên nghiệp.",
     icon: Sparkles,
     color: "from-indigo-600 to-indigo-800",
     href: "/generate"
+  },
+  {
+    title: "Fact-check & Xác minh (Verify)",
+    description: "Đối chiếu tài liệu với bất kỳ bộ quy tắc nội bộ (Business Rule) hay dữ liệu tham chiếu (Reference Data) để tự động phát hiện mọi bất thường và cảnh báo rủi ro.",
+    icon: ShieldCheck,
+    color: "from-emerald-500 to-emerald-700",
+    href: "/fact-check"
   }
 ];
 
@@ -43,28 +50,27 @@ export default function Home() {
       <div className="text-center max-w-4xl mx-auto px-6 py-24">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card border border-border shadow-sm mb-8 text-sm font-medium text-muted-foreground">
           <Sparkles className="w-4 h-4 text-primary" />
-          <span>The next generation of document AI</span>
+          <span>🚀 AI-Powered Document Intelligence</span>
         </div>
         <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-foreground mb-6 leading-tight">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-500">dugate</span><br/>
-          Document Understanding Gateway
+          Xử lý mọi văn bản với<br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-sky-500">Document Understanding</span>
         </h1>
         <p className="text-xl text-muted-foreground mb-10 max-w-2xl mx-auto leading-relaxed">
-          Trợ lý AI chuyên dụng phân tích, chuyển đổi và tái tạo các định dạng tài liệu đặc thù (DOCX, PDF) sang cấu trúc dữ liệu tối ưu với độ chính xác cao nhất.
+          Kỷ nguyên mới của tự động hoá xử lý văn bản. Document Understanding tận dụng sức mạnh AI vượt trội để bóc tách các văn bản (PDF, DOCX), đối chiếu hợp đồng tự động và kiểm chứng dữ liệu với độ chính xác tuyệt đối. Mọi tác vụ thủ công phức tạp giờ chỉ diễn ra trong vài giây (hoặc lâu hơn một chút).
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link href="/generate" className="w-full sm:w-auto btn-danger modern-button flex items-center justify-center">
-            <Sparkles className="w-5 h-5 mr-2" />
-            Bắt đầu Tạo ngay
-          </Link>
-          <Link href="/transform" className="modern-button btn-outline w-full sm:w-auto">
-            Chuyển đổi File
+          <a href="#features" className="w-full sm:w-auto bg-primary text-primary-foreground hover:bg-primary/90 modern-button flex items-center justify-center font-bold px-8">
+            Khám phá Hệ thống
+          </a>
+          <Link href="/generate" className="modern-button btn-outline w-full sm:w-auto flex items-center justify-center">
+            <Sparkles className="w-5 h-5 mr-2 text-primary" /> Trải nghiệm AI Ngay
           </Link>
         </div>
       </div>
 
       {/* Action Cards */}
-      <div className="max-w-7xl mx-auto px-6 pb-24">
+      <div id="features" className="max-w-7xl mx-auto px-6 pb-24 scroll-mt-24">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {FEATURES.map((feature, idx) => (
             <Link

@@ -44,12 +44,21 @@ export async function middleware(request: NextRequest) {
           { status: res.status }
         );
       }
+
+      // API authenticated, pass down the apiKeyId if present
+      const requestHeaders = new Headers(request.headers);
+      if (data.apiKeyId) {
+        requestHeaders.set('x-api-key-id', data.apiKeyId);
+      }
+      return NextResponse.next({
+        request: {
+          headers: requestHeaders,
+        },
+      });
     } catch (err) {
       return NextResponse.json({ error: 'Internal Auth Service Error' }, { status: 500 });
     }
-    
-    // API authenticated, skip the setup check since APIs don't care about UI setup state
-    return NextResponse.next();
+
   }
 
   // Check if setup is complete (has at least one user)

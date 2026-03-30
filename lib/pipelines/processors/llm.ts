@@ -33,6 +33,8 @@ async function resolveInputText(ctx: ProcessorContext): Promise<string> {
       const mode = (ctx.processorConfig.docxMode as 'pandoc' | 'ai') ?? 'ai';
       const { rawMdPath } = await convertDocx(ctx.inputFilePath, outputDir, ctx.fileName, { mode });
       return await fs.readFile(rawMdPath, 'utf-8');
+    } else if (['txt', 'md', 'json', 'csv', 'html', 'xml'].includes(ext || '')) {
+      return await fs.readFile(ctx.inputFilePath, 'utf-8');
     }
     throw new Error(`LLM processor cannot extract text from .${ext} files`);
   }

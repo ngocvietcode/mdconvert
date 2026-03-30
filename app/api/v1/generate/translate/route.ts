@@ -84,6 +84,7 @@ export async function POST(req: NextRequest) {
       outputFormat: (form.get('output_format') as string) ?? 'md',
       webhookUrl:   form.get('webhook_url') as string | null,
       idempotencyKey: req.headers.get('idempotency-key') ?? undefined,
+      apiKeyId: req.headers.get('x-api-key-id') ?? undefined,
     });
 
     if (!result.ok) return result.errorResponse;

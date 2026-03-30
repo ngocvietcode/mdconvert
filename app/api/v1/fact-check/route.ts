@@ -5,6 +5,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { submitPipelineJob } from '@/lib/pipelines/submit';
 import { formatOperationResponse } from '@/lib/pipelines/format';
+import { resolveRecipeOverride } from '@/lib/recipes/override';
 
 /**
  * @swagger
@@ -83,8 +84,9 @@ import { formatOperationResponse } from '@/lib/pipelines/format';
 export async function POST(req: NextRequest) {
   try {
     const form = await req.formData();
+    const apiKeyId = req.headers.get('x-api-key-id') ?? undefined;
 
-    // ── Validate required fields ────────────────────────────────────────────
+    // ── Validate required fields ─────────────────────────────────────────────
     const referenceText = form.get('reference_text') as string | null;
     if (!referenceText?.trim()) {
       return NextResponse.json(
@@ -111,19 +113,37 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ── Submit pipeline ─────────────────────────────────────────────────────
+    // ── Recipe-level Override (Scope B) ──────────────────────────────────────
+    let finalCheckPrompt = checkPrompt.trim();
+    let pipelineVariables: Record<string, unknown> = {};
+
+    if (apiKeyId) {
+      const recipeOverride = await resolveRecipeOverride('recipe-fact-check', apiKeyId);
+      if (recipeOverride) {
+        // Merge extra variables from override
+        pipelineVariables = { ...recipeOverride.extraVariables };
+        // Append systemPromptAddon to check_prompt (client-specific rules appended)
+        if (recipeOverride.systemPromptAddon) {
+          finalCheckPrompt = `${finalCheckPrompt}\n\n---\n\n**Additional Client Rules:**\n${recipeOverride.systemPromptAddon}`;
+        }
+      }
+    }
+
+    // ── Submit pipeline ───────────────────────────────────────────────────────
     const result = await submitPipelineJob({
       pipeline: [{
         processor: 'prebuilt-fact-check',
         variables: {
           reference_text: referenceText.trim(),
-          check_prompt:   checkPrompt.trim(),
+          check_prompt:   finalCheckPrompt,
+          ...pipelineVariables,
         },
       }],
       file:         form.get('file') as File | null,
       outputFormat: 'json',
       webhookUrl:   form.get('webhook_url') as string | null,
       idempotencyKey: req.headers.get('idempotency-key') ?? undefined,
+      apiKeyId,
     });
 
     if (!result.ok) return result.errorResponse;
