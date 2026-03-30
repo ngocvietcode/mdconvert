@@ -46,6 +46,8 @@ model Processor {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
+  overrides       ProcessorOverride[]
+
   @@index([slug])
   @@index([type, state])
   @@index([tenantApiKeyId])
@@ -137,8 +139,36 @@ model ApiKey {
   updatedAt     DateTime    @updatedAt
 
   operations    Operation[]
+  overrides     ProcessorOverride[]
 
   @@index([status])
+}
+
+// ═══════════════════════════════════════════════
+// Processor Override — Per-client Prompt Overrides
+// ═══════════════════════════════════════════════
+model ProcessorOverride {
+  id              String   @id @default(uuid())
+  processorId     String
+  apiKeyId        String
+
+  // Overridden fields (null = use global processor's value)
+  systemPrompt    String?  @db.Text
+  responseSchema  String?  @db.Text
+  maxOutputTokens Int?     
+  temperature     Float?   
+  modelOverride   String?
+  processorConfig String?  @db.Text
+
+  processor       Processor @relation(fields: [processorId], references: [id], onDelete: Cascade)
+  apiKey          ApiKey    @relation(fields: [apiKeyId], references: [id], onDelete: Cascade)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Each API Key can have at most ONE override per processor
+  @@unique([processorId, apiKeyId])
+  @@index([apiKeyId])
 }
 
 // ═══════════════════════════════════════════════

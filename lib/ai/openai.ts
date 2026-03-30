@@ -112,7 +112,52 @@ export async function describeImages(
 }
 
 export async function convertPdfWithAI(pdfPath: string): Promise<string> {
-  throw new Error('Chức năng PDF bằng Vision API chưa được hỗ trợ tốt trên chuẩn OpenAI (API không hỗ trợ native file pdf qua base64 URL như Gemini). Vui lòng đổi sang Gemini để dùng chế độ đọc PDF.');
+  const prompt = await getSetting('ai_pdf_prompt');
+  const model = await getSetting('ai_model') || 'gpt-4o-mini';
+  const client = await getClient();
+
+  const pdfBuffer = await fs.readFile(pdfPath);
+  const base64 = pdfBuffer.toString('base64');
+  const mimeType = 'application/pdf';
+
+  let consecutiveFails = 0;
+
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const response = await client.chat.completions.create({
+        model,
+        messages: [
+          {
+            role: 'user',
+            content: [
+              { type: 'text', text: prompt },
+              { type: 'image_url', image_url: { url: `data:${mimeType};base64,${base64}` } }
+            ]
+          }
+        ]
+      });
+
+      const text = response.choices[0]?.message?.content?.trim() || '';
+      await sleep(DELAY_MS);
+      return text;
+    } catch (err: any) {
+      if (err.status === 429) {
+        consecutiveFails++;
+        if (consecutiveFails >= 3) {
+          await sleep(30_000);
+          consecutiveFails = 0;
+        } else {
+          await sleep(2000);
+        }
+        continue;
+      }
+      if (attempt >= 1) {
+        console.error(`[OpenAI] convertPdf error:`, err);
+        throw err;
+      }
+    }
+  }
+  throw new Error('Không thể đọc PDF qua OpenAI chuẩn sau nhiều lần thử.');
 }
 
 export async function convertDocxWithAI(htmlContent: string): Promise<string> {

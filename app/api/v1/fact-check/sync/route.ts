@@ -222,6 +222,7 @@ export async function POST(req: NextRequest) {
       outputFormat: 'json',
       webhookUrl:   null,   // sync — no webhook needed
       idempotencyKey: req.headers.get('idempotency-key') ?? undefined,
+      apiKeyId: req.headers.get('x-api-key-id') ?? undefined,
     });
 
     if (!submitResult.ok) return submitResult.errorResponse;

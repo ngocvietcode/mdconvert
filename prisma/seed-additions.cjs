@@ -112,6 +112,79 @@ Return ONLY a valid JSON object with this exact structure (no markdown fences, n
   },
 ];
 
+// ─── Recipe Processor Anchors ────────────────────────────────────────────────
+// Đây là các Processor ảo (type = RECIPE) đại diện cho từng Recipe Endpoint.
+// Chúng KHÔNG tham gia pipeline execution — chỉ là anchor để gắn ProcessorOverride.
+// Override sẽ lưu: systemPromptAddon (nối vào processor bên trong) + extraVariables (JSON).
+
+const RECIPE_PROCESSORS = [
+  {
+    slug: 'recipe-transform',
+    displayName: 'Recipe: Bóc tách & Chuyển đổi (/transform)',
+    type: 'RECIPE',
+    category: 'extract',
+    description: 'Override cho Recipe Endpoint /api/v1/transform. Ghi đè output format hoặc inject system prompt addon vào prebuilt-layout.',
+    systemPrompt: '',
+    acceptedMimes: PDF_DOCX_MIMES,
+    outputFormats: 'md,html',
+    canBeFirstStep: false,
+    canBeChainStep: false,
+    state: 'ENABLED',
+  },
+  {
+    slug: 'recipe-compare',
+    displayName: 'Recipe: So sánh & Tìm điểm khác (/compare)',
+    type: 'RECIPE',
+    category: 'analyze',
+    description: 'Override cho Recipe Endpoint /api/v1/compare. Inject system prompt addon vào prebuilt-compare hoặc ghi đè model.',
+    systemPrompt: '',
+    acceptedMimes: PDF_DOCX_MIMES,
+    outputFormats: 'json',
+    canBeFirstStep: false,
+    canBeChainStep: false,
+    state: 'ENABLED',
+  },
+  {
+    slug: 'recipe-fact-check',
+    displayName: 'Recipe: Fact-check & Xác minh (/fact-check)',
+    type: 'RECIPE',
+    category: 'analyze',
+    description: 'Override cho Recipe Endpoint /api/v1/fact-check. Nối thêm check_prompt cố định, hoặc inject system prompt addon vào prebuilt-fact-check.',
+    systemPrompt: '',
+    acceptedMimes: PDF_DOCX_MIMES,
+    outputFormats: 'json',
+    canBeFirstStep: false,
+    canBeChainStep: false,
+    state: 'ENABLED',
+  },
+  {
+    slug: 'recipe-generate-summary',
+    displayName: 'Recipe: Tóm tắt AI (/generate/summary)',
+    type: 'RECIPE',
+    category: 'generate',
+    description: 'Override cho Recipe Endpoint /api/v1/generate/summary. Ghi đè max_words mặc định hoặc inject system prompt addon vào prebuilt-summarize.',
+    systemPrompt: '',
+    acceptedMimes: PDF_DOCX_MIMES,
+    outputFormats: 'md,html',
+    canBeFirstStep: false,
+    canBeChainStep: false,
+    state: 'ENABLED',
+  },
+  {
+    slug: 'recipe-generate-translate',
+    displayName: 'Recipe: Dịch thuật AI (/generate/translate)',
+    type: 'RECIPE',
+    category: 'generate',
+    description: 'Override cho Recipe Endpoint /api/v1/generate/translate. Ghi đè ngôn ngữ mặc định hoặc inject system prompt addon vào prebuilt-translate.',
+    systemPrompt: '',
+    acceptedMimes: PDF_DOCX_MIMES,
+    outputFormats: 'md,html',
+    canBeFirstStep: false,
+    canBeChainStep: false,
+    state: 'ENABLED',
+  },
+];
+
 async function main() {
   console.log('🌱 [seed-additions] Seeding additional processors...');
   for (const proc of ADDITIONAL_PROCESSORS) {
@@ -122,7 +195,19 @@ async function main() {
     });
     console.log(`  ✅ ${proc.slug}`);
   }
-  console.log(`\n🎉 [seed-additions] Done. ${ADDITIONAL_PROCESSORS.length} processors upserted.`);
+
+  console.log('\n🌱 [seed-additions] Seeding recipe processor anchors...');
+  for (const proc of RECIPE_PROCESSORS) {
+    await prisma.processor.upsert({
+      where: { slug: proc.slug },
+      update: proc,
+      create: proc,
+    });
+    console.log(`  ✅ ${proc.slug}`);
+  }
+
+  const total = ADDITIONAL_PROCESSORS.length + RECIPE_PROCESSORS.length;
+  console.log(`\n🎉 [seed-additions] Done. ${total} processors upserted.`);
 }
 
 main()
