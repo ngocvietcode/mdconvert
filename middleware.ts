@@ -1,18 +1,16 @@
 // middleware.ts
-// Redirect to /setup when no users exist (first-run detection).
-// By default the app requires no login — anyone with the URL can use it.
-// To enable login: set require_login = true in AppSetting (future feature).
+// Dual auth: NextAuth for UI routes, x-api-key for /api/v1/ integration routes.
 
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { getToken } from 'next-auth/jwt';
 
-// Paths that bypass all middleware checks
+// Paths that bypass ALL middleware checks (no auth required)
 const BYPASS_PREFIXES = [
-  '/setup',
-  '/api/setup',
-  '/api/auth',
-  '/api/health',
   '/login',
+  '/api/auth',     // NextAuth endpoints
+  '/api/health',
+  '/api/internal', // Called by middleware itself — must not loop
   '/_next',
   '/favicon.ico',
 ];
@@ -20,15 +18,15 @@ const BYPASS_PREFIXES = [
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // --- Bypass paths ---
   if (BYPASS_PREFIXES.some(p => pathname.startsWith(p))) {
     return NextResponse.next();
   }
 
-  // --- Public API Integration Protection ---
+  // --- Public API Integration (/api/v1/) — x-api-key auth ---
   if (pathname.startsWith('/api/v1/')) {
     const passedKey = request.headers.get('x-api-key') || '';
-    
-    // Gọi Internal Endpoint để kiểm tra vì Middleware Edge Runtime không truy cập được Prisma
+
     try {
       const authUrl = new URL('/api/internal/auth-key', request.url);
       const res = await fetch(authUrl, {
@@ -37,7 +35,7 @@ export async function middleware(request: NextRequest) {
         cache: 'no-store',
       });
       const data = await res.json();
-      
+
       if (!res.ok || !data.valid) {
         return NextResponse.json(
           { error: data.error || 'Unauthorized' },
@@ -45,33 +43,32 @@ export async function middleware(request: NextRequest) {
         );
       }
 
-      // API authenticated, pass down the apiKeyId if present
       const requestHeaders = new Headers(request.headers);
       if (data.apiKeyId) {
         requestHeaders.set('x-api-key-id', data.apiKeyId);
       }
       return NextResponse.next({
-        request: {
-          headers: requestHeaders,
-        },
+        request: { headers: requestHeaders },
       });
-    } catch (err) {
+    } catch {
       return NextResponse.json({ error: 'Internal Auth Service Error' }, { status: 500 });
     }
-
   }
 
-  // Check if setup is complete (has at least one user)
-  try {
-    const statusUrl = new URL('/api/setup', request.url);
-    const res = await fetch(statusUrl, { cache: 'no-store' });
-    const data = await res.json() as { hasUsers: boolean };
+  // --- All other routes: NextAuth session required ---
+  const token = await getToken({
+    req: request,
+    secret: process.env.NEXTAUTH_SECRET || 'fallback-dev-secret-12345',
+  });
 
-    if (!data.hasUsers) {
-      return NextResponse.redirect(new URL('/setup', request.url));
+  if (!token) {
+    // API routes get 401; page routes redirect to /login
+    if (pathname.startsWith('/api/')) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-  } catch {
-    // If status check fails, don't block access
+    const loginUrl = new URL('/login', request.url);
+    loginUrl.searchParams.set('callbackUrl', pathname);
+    return NextResponse.redirect(loginUrl);
   }
 
   return NextResponse.next();

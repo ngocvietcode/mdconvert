@@ -5,6 +5,7 @@ import { ensureCleanupScheduled } from "@/lib/cleanup-scheduler";
 import HeaderNav from "@/components/HeaderNav";
 import PageWrapper from "@/components/PageWrapper";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -43,10 +44,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="vi" className={`${jakarta.variable} ${dmSans.variable} ${beVietnam.variable} ${inter.variable}`} suppressHydrationWarning>
       <body className="font-sans bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary transition-colors duration-300">
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <HeaderNav />
-          <PageWrapper>{children}</PageWrapper>
-        </ThemeProvider>
+        <SessionProviderWrapper>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <HeaderNav />
+            <PageWrapper>{children}</PageWrapper>
+          </ThemeProvider>
+        </SessionProviderWrapper>
       </body>
     </html>
   );
