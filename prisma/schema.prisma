@@ -286,3 +286,15 @@ model AppSetting {
   value     String   @db.Text
   updatedAt DateTime @updatedAt
 }
+
+// ═══════════════════════════════════════════════
+// Users & Authentication
+// ═══════════════════════════════════════════════
+model User {
+  id        String   @id @default(uuid())
+  username  String   @unique
+  password  String   // Hashed via bcrypt
+  role      String   @default("USER") // ADMIN | USER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

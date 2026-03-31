@@ -3,7 +3,7 @@
 
 import { PrismaClient } from '@prisma/client';
 import * as crypto from 'crypto';
-
+import * as bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 const PDF_DOCX_MIMES = 'application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -394,6 +394,19 @@ async function main() {
     });
     console.log(`  📡 Enabled ProfileEndpoint: ${slug}`);
   }
+
+  // 5. Setup Default Admin User
+  console.log('\\n[5/5] Ensuring Default Admin User...');
+  const defaultPassword = '123456';
+  const hashedPassword = await bcrypt.hash(defaultPassword, 10);
+  
+  const adminUser = await prisma.user.upsert({
+    where: { username: 'admin' },
+    update: { password: hashedPassword, role: 'ADMIN' },
+    create: { username: 'admin', password: hashedPassword, role: 'ADMIN' },
+  });
+  console.log(`  👤 Admin User seeded (Username: ${adminUser.username})`);
+  console.log(`  ℹ️  Default login password: ${defaultPassword}`);
 
   console.log('\\n🎉 Master Data Seeding completed successfully!');
 }

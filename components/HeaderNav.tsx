@@ -1,14 +1,33 @@
 'use client';
-// components/HeaderNav.tsx — ẩn trên trang /login
+// components/HeaderNav.tsx — ẩn trên trang /login, hiển thị user dropdown
 
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { Home, Clock, Settings, FileText, SlidersHorizontal, PlugZap } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Home, Clock, Settings, FileText, SlidersHorizontal, PlugZap, User, LogOut, Users, ChevronDown } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 
 export default function HeaderNav() {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   if (pathname === '/login' || pathname === '/setup') return null;
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const isAdmin = session?.user?.role === 'ADMIN';
 
   return (
     <header className="glass-header sticky top-0 z-50">
@@ -75,6 +94,57 @@ export default function HeaderNav() {
           <div className="w-[1px] h-6 bg-border mx-2" />
           
           <ThemeToggle />
+
+          {/* User Profile Dropdown */}
+          {session?.user && (
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-full hover:bg-muted transition-colors duration-200"
+              >
+                <div className="w-7 h-7 rounded-full bg-primary/15 flex items-center justify-center">
+                  <User className="w-4 h-4 text-primary" />
+                </div>
+                <span className="text-foreground max-w-[100px] truncate">{session.user.username || session.user.name}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ${showDropdown ? 'rotate-180' : ''}`} />
+              </button>
+
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-56 rounded-2xl bg-card border border-border shadow-lg overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                  {/* User Info */}
+                  <div className="px-4 py-3 border-b border-border">
+                    <p className="text-sm font-semibold text-foreground truncate">
+                      {session.user.username || session.user.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {session.user.role === 'ADMIN' ? '🔑 Quản trị viên' : '👤 Người dùng'}
+                    </p>
+                  </div>
+
+                  {/* Menu Items */}
+                  <div className="p-1.5">
+                    {isAdmin && (
+                      <Link
+                        href="/settings/users"
+                        onClick={() => setShowDropdown(false)}
+                        className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-foreground rounded-xl hover:bg-muted transition-colors"
+                      >
+                        <Users className="w-4 h-4 text-muted-foreground" />
+                        Quản lý người dùng
+                      </Link>
+                    )}
+                    <button
+                      onClick={() => signOut({ callbackUrl: '/login' })}
+                      className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-destructive rounded-xl hover:bg-destructive/10 transition-colors w-full text-left"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Đăng xuất
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </nav>
     </header>
