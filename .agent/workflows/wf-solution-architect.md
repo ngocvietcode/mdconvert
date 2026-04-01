@@ -147,7 +147,7 @@ Present a **decision matrix** for every major choice:
    Decision: {what we decided}
    Consequences: {positive and negative}
    ```
-2. **Handoff to `@[/leader]`** or `@[/fullstack-coder]`\*\* with:
+2. **Handoff to `@[/wf-leader]`** or `@[/wf-fullstack-coder]`\*\* with:
    - Architecture diagrams
    - Database schema
    - API spec
