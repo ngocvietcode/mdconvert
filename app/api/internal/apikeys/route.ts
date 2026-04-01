@@ -2,6 +2,24 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import crypto from 'crypto';
 
+export async function GET(req: NextRequest) {
+  try {
+    const apiKeys = await prisma.apiKey.findMany({
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        name: true,
+        status: true,
+        keyHash: true,
+      }
+    });
+    return NextResponse.json({ success: true, apiKeys });
+  } catch (error: any) {
+    console.error('[ApiKey API - GET Error]', error);
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+  }
+}
+
 // Tạo mới ApiKey
 export async function POST(req: NextRequest) {
   try {

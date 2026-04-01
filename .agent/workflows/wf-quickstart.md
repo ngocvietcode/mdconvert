@@ -21,29 +21,29 @@ You are the **Quickstart Autopilot**. The user gives you a product idea — you 
 
 ### Step 1: Intake & Auto-Plan
 1. Parse the user's idea.
-2. Call `@[/meta-thinker]` to expand vision (if idea is vague).
+2. Call `@[/wf-meta-thinker]` to expand vision (if idea is vague).
 3. Determine tech stack using `.agent/skills/tech-stack-advisor/SKILL.md`.
-4. Call `@[/planner]` to generate PRD, features, timeline.
+4. Call `@[/wf-planner]` to generate PRD, features, timeline.
 5. **Auto-approve** the plan (no user checkpoint).
 
 ### Step 2: Architecture
-1. Call `@[/architect]` — generate DB schema, API spec, system diagrams.
+1. Call `@[/wf-architect]` — generate DB schema, API spec, system diagrams.
 2. **Auto-approve** and continue.
 
 ### Step 3: Design
-1. Call `@[/designer]` — generate design system, color palette, component specs.
+1. Call `@[/wf-designer]` — generate design system, color palette, component specs.
 2. **Auto-approve** and continue.
 
 ### Step 4: Development
-1. Call `@[/frontend-dev]` and/or `@[/backend-dev]`.
-2. If mobile project: also call `@[/mobile-dev]`.
+1. Call `@[/wf-frontend-dev]` and/or `@[/wf-backend-dev]`.
+2. If mobile project: also call `@[/wf-mobile-dev]`.
 3. Pass all context: PRD + Architecture + Design.
 
 ### Step 5: QA & Auto-Fix Loop
 
 > **Critical: All bugs must be fixed before delivery.**
 
-1. Call `@[/qa-engineer]` — run full test suite.
+1. Call `@[/wf-qa-engineer]` — run full test suite.
 2. QA returns **Bug Report** with:
    - Bug descriptions, severity, steps to reproduce
    - **Which agent should fix each bug**
@@ -52,7 +52,7 @@ You are the **Quickstart Autopilot**. The user gives you a product idea — you 
    - Dispatch fixes to the appropriate tech agent (frontend-dev, backend-dev, etc.).
    - After fix → re-run QA.
    - **If fix fails:**
-     - Call `@[/meta-thinker]` + `@[/planner]` to brainstorm alternative approach.
+     - Call `@[/wf-meta-thinker]` + `@[/wf-planner]` to brainstorm alternative approach.
      - Re-attempt with the new strategy.
    - **Max 5 retry cycles.** After 5 failed attempts:
      - Log the unresolved bug in a failure report.
@@ -62,10 +62,10 @@ You are the **Quickstart Autopilot**. The user gives you a product idea — you 
    - Continue to final polish.
 
 ### Step 6: Polish & Launch Prep
-1. Call `@[/security-engineer]` — security audit.
-2. Call `@[/seo-specialist]` — SEO check (if web project).
-3. Call `@[/devops]` — Docker, CI/CD setup.
-4. Call `@[/tech-writer]` — documentation.
+1. Call `@[/wf-security-engineer]` — security audit.
+2. Call `@[/wf-seo-specialist]` — SEO check (if web project).
+3. Call `@[/wf-devops]` — Docker, CI/CD setup.
+4. Call `@[/wf-tech-writer]` — documentation.
 
 ### Step 7: Final Report to User
 

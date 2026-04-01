@@ -43,7 +43,7 @@ function OverridesContent() {
   // Fetch initial data
   const fetchData = async () => {
     try {
-      const overridesRes = await fetch('/api/internal/overrides');
+      const overridesRes = await fetch('/api/internal/apikeys');
       const data = await overridesRes.json();
       
       if (data.success) {
@@ -351,7 +351,6 @@ function ProfileEndpointCard({
     setProfileParamsStr(endpoint.profileParams ? JSON.stringify(endpoint.profileParams, null, 2) : '');
     setDefaultObj(endpoint.defaultParams || {});
     setProfileObj(endpoint.profileParams || {});
-    setIsEditing(false);
 
     const initialOverrides: Record<string, string | null> = {};
     endpoint.extConnections?.forEach((conn: any) => {
@@ -425,15 +424,21 @@ function ProfileEndpointCard({
           }),
         });
       }) || [];
-
-      await Promise.all([endpointPromise, ...overridePromises]);
+      const responses = await Promise.all([endpointPromise, ...overridePromises]);
+      
+      for (const res of responses) {
+        if (!res.ok) {
+           const errData = await res.json().catch(() => ({}));
+           throw new Error(errData.error || `HTTP ${res.status}`);
+        }
+      }
       
       // Update local state without closing editor if manually saved
       setDefaultObj(finalDefaultObj || {});
       setProfileObj(finalProfileObj || {});
       onUpdated();
-    } catch {
-      alert('Lỗi khi lưu thiết lập, vui lòng kiểm tra định dạng JSON.');
+    } catch (err: any) {
+      alert(`Lỗi khi lưu thiết lập: ${err.message}`);
     } finally {
       setSaving(false);
     }
@@ -580,7 +585,7 @@ function ProfileEndpointCard({
                     className="w-full bg-background border border-border rounded-lg p-3 font-mono text-xs sm:text-sm leading-relaxed min-h-[160px] focus:ring-2 focus:ring-indigo-500/30"
                     placeholder={'{\n  "max_words": 500\n}'}
                   />
-                  <p className="text-xs text-muted-foreground mt-2">Được phép truyền: {Object.keys(endpoint.clientParamsSchema || {}).join(', ')}</p>
+                  <p className="text-xs text-muted-foreground mt-2">Được phép truyền: {Object.keys(endpoint.clientParams || {}).join(', ')}</p>
                 </div>
                 <div className="animate-in fade-in">
                   <label className="text-sm font-bold text-foreground flex items-center gap-2 mb-2">
@@ -592,7 +597,7 @@ function ProfileEndpointCard({
                     className="w-full bg-background border border-border rounded-lg p-3 font-mono text-xs sm:text-sm leading-relaxed min-h-[160px] focus:ring-2 focus:ring-amber-500/30"
                     placeholder={'{\n  "business_rules": "1. Rule A..."\n}'}
                   />
-                  <p className="text-xs text-muted-foreground mt-2">Dành cho Admin: {Object.keys(endpoint.profileOnlyParamsSchema || {}).join(', ')}</p>
+                  <p className="text-xs text-muted-foreground mt-2">Dành cho Admin: {Object.keys(endpoint.profileOnlyParams || {}).join(', ')}</p>
                 </div>
               </>
             ) : (
@@ -604,10 +609,10 @@ function ProfileEndpointCard({
                   </label>
                   <p className="text-xs text-muted-foreground mb-4">Giá trị mặc định của API. Client có thể gửi data đè giá trị này.</p>
                   <div className="space-y-1">
-                    {Object.entries(endpoint.clientParamsSchema || {}).length === 0 && (
+                    {Object.entries(endpoint.clientParams || {}).length === 0 && (
                        <div className="text-sm text-muted-foreground py-4 text-center bg-muted/30 rounded-lg border border-dashed">Không có tham số nào được hỗ trợ.</div>
                     )}
-                    {Object.entries(endpoint.clientParamsSchema || {}).map(([key, schema]) => 
+                    {Object.entries(endpoint.clientParams || {}).map(([key, schema]) => 
                       renderSchemaInput(key, schema, defaultObj[key], (v) => {
                         setDefaultObj(prev => {
                           const newer = { ...prev };
@@ -628,10 +633,10 @@ function ProfileEndpointCard({
                     Client <strong>KHÔNG</strong> được phép thay đổi. Giá trị này ghi đè hoàn toàn input của client.
                   </p>
                   <div className="space-y-1">
-                    {Object.entries(endpoint.profileOnlyParamsSchema || {}).length === 0 && (
+                    {Object.entries(endpoint.profileOnlyParams || {}).length === 0 && (
                        <div className="text-sm text-muted-foreground py-4 text-center bg-muted/30 rounded-lg border border-dashed">Không có tham số Admin-only nào.</div>
                     )}
-                    {Object.entries(endpoint.profileOnlyParamsSchema || {}).map(([key, schema]) => 
+                    {Object.entries(endpoint.profileOnlyParams || {}).map(([key, schema]) => 
                       renderSchemaInput(key, schema, profileObj[key], (v) => {
                         setProfileObj(prev => {
                           const newer = { ...prev };

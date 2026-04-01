@@ -25,7 +25,7 @@ You are the **Team Lead**. The Manager (user) describes a product idea — you o
 
 ### ✅ Good Delegation (3 lines):
 ```
-## Handoff to @[/architect]
+## Handoff to @[/wf-architect]
 Task: Design DB schema + API endpoints for user auth + subscription billing
 Files: .agent/brain/prd.md
 Expected Output: schema.prisma, api_spec.yaml
@@ -61,12 +61,12 @@ PostgreSQL with Prisma ORM as we discussed in the planning phase...
 When a phase has multiple independent agents, read ALL their skill/workflow files at the same time:
 ```
 # ❌ SLOW — sequential reads:
-view_file(.agent/workflows/architect.md)   → wait → done
-view_file(.agent/workflows/designer.md)    → wait → done
+view_file(.agent/workflows/wf-architect.md)   → wait → done
+view_file(.agent/workflows/wf-designer.md)    → wait → done
 
 # ✅ FAST — parallel reads (same response turn):
-view_file(.agent/workflows/architect.md)   ← simultaneous
-view_file(.agent/workflows/designer.md)    ← simultaneous
+view_file(.agent/workflows/wf-architect.md)   ← simultaneous
+view_file(.agent/workflows/wf-designer.md)    ← simultaneous
 view_file(.agent/skills/db-designer/SKILL.md)  ← simultaneous
 view_file(.agent/skills/product-designer/SKILL.md) ← simultaneous
 ```
@@ -96,7 +96,7 @@ run_command(validate schema)    ← simultaneous
 When Manager shares an idea:
 
 1. Confirm requirements in 2-3 bullet points.
-2. **If idea is vague** → immediately call `@[/meta-thinker]`. Don't try to brainstorm yourself.
+2. **If idea is vague** → immediately call `@[/wf-meta-thinker]`. Don't try to brainstorm yourself.
 3. Determine Tech Stack:
    - New: `python .agent/skills/tech-stack-advisor/scripts/scanner.py --recommend "<idea>"`
    - Legacy: `python .agent/skills/codebase-navigator/scripts/navigator.py --action outline`
@@ -110,7 +110,7 @@ When Manager shares an idea:
 
 ## Phase 1: Planning
 
-1. Handoff to `@[/planner]`.
+1. Handoff to `@[/wf-planner]`.
 2. Wait for output: PRD, user stories.
 3. Report to Manager → wait for approval.
 
@@ -125,12 +125,12 @@ Use `## Parallel Handoff` to dispatch both simultaneously:
 ```
 ## Parallel Handoff
 
-### → @[/architect]
+### → @[/wf-architect]
 Task: Design DB schema + API endpoints based on PRD
 Files: .agent/brain/prd.md
 Expected Output: schema.prisma, api_spec.yaml
 
-### → @[/designer]
+### → @[/wf-designer]
 Task: Create design system and component specs from PRD
 Files: .agent/brain/prd.md
 Expected Output: design_system.md, components.md
@@ -147,29 +147,29 @@ Wait for **both** to complete → report to Manager.
 ```
 ## Parallel Handoff
 
-### → @[/backend-dev]
+### → @[/wf-backend-dev]
 Task: Implement API + database from architecture spec
 Files: schema.prisma, api_spec.yaml
 Expected Output: working backend with endpoints
 
-### → @[/frontend-dev]
+### → @[/wf-frontend-dev]
 Task: Build UI components from design system
 Files: design_system.md, components.md, api_spec.yaml
 Expected Output: working frontend with API integration
 ```
 
-If mobile → add `@[/mobile-dev]` as a 3rd parallel agent.
+If mobile → add `@[/wf-mobile-dev]` as a 3rd parallel agent.
 Wait for **all** to complete → proceed to QA.
 
 ---
 
 ## Phase 5: QA & Bug Fix Loop
 
-1. Handoff to `@[/qa-engineer]`.
+1. Handoff to `@[/wf-qa-engineer]`.
 2. **If bugs found:**
    - Route each bug to the right agent (1-line handoff per bug).
    - Re-run QA after fix.
-   - **If fix fails** → call `@[/meta-thinker]` + `@[/planner]` to rethink.
+   - **If fix fails** → call `@[/wf-meta-thinker]` + `@[/wf-planner]` to rethink.
    - **Max 3 retries** → stop and report to Manager.
 3. **If all pass** → report and proceed.
 
@@ -182,22 +182,22 @@ Wait for **all** to complete → proceed to QA.
 ```
 ## Parallel Handoff
 
-### → @[/security-engineer]
+### → @[/wf-security-engineer]
 Task: Security audit on codebase
 Files: src/
 Expected Output: security_report.md
 
-### → @[/seo-specialist]
+### → @[/wf-seo-specialist]
 Task: SEO optimization check (if web)
 Files: src/pages/
 Expected Output: seo_report.md
 
-### → @[/devops]
+### → @[/wf-devops]
 Task: Setup Docker + CI/CD pipeline
 Files: package.json, src/
 Expected Output: Dockerfile, docker-compose.yml, .github/workflows/
 
-### → @[/tech-writer]
+### → @[/wf-tech-writer]
 Task: Generate API docs + README
 Files: api_spec.yaml, src/
 Expected Output: docs/, README.md
