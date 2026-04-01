@@ -33,6 +33,7 @@ function OverridesContent() {
   // Selection State
   const [selectedClientId, setSelectedClientId] = useState<string>('');
   const [profileEndpoints, setProfileEndpoints] = useState<any[]>([]);
+  const [activeServiceTab, setActiveServiceTab] = useState<string>('extract');
   
   // New Client Modal/State
   const [showAddClient, setShowAddClient] = useState(false);
@@ -259,16 +260,45 @@ function OverridesContent() {
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-bold flex items-center gap-2">Endpoints Hierarchy</h2>
               </div>
-              <div className="grid grid-cols-1 gap-4">
-                {profileEndpoints.map(ep => (
-                  <ProfileEndpointCard
-                    key={ep.slug}
-                    endpoint={ep}
-                    apiKeyId={selectedClientId}
-                    onUpdated={() => fetchProfileEndpoints(selectedClientId)}
-                  />
-                ))}
-              </div>
+
+              {profileEndpoints.length > 0 ? (
+                <>
+                  {/* TABS NAVIGATION */}
+                  <div className="flex gap-2 border-b border-border mb-4 overflow-x-auto scroolbar-hide">
+                    {Array.from(new Set(profileEndpoints.map(ep => ep.serviceSlug))).map(serviceSlug => (
+                      <button
+                        key={serviceSlug as string}
+                        onClick={() => setActiveServiceTab(serviceSlug as string)}
+                        className={`px-5 py-2.5 font-bold text-sm rounded-t-xl transition-all capitalize flex whitespace-nowrap ${
+                          (activeServiceTab === serviceSlug || (!activeServiceTab && serviceSlug === 'extract'))
+                            ? 'bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-400 border-b-2 border-indigo-600 dark:border-indigo-500 shadow-sm'
+                            : 'text-muted-foreground hover:bg-muted hover:text-foreground'
+                        }`}
+                      >
+                        {serviceSlug as string}
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-4">
+                    {profileEndpoints
+                      .filter(ep => ep.serviceSlug === activeServiceTab || (!activeServiceTab && ep.serviceSlug === 'extract'))
+                      .map(ep => (
+                      <ProfileEndpointCard
+                        key={ep.slug}
+                        endpoint={ep}
+                        apiKeyId={selectedClientId}
+                        onUpdated={() => fetchProfileEndpoints(selectedClientId)}
+                      />
+                    ))}
+                  </div>
+                </>
+              ) : (
+                 <div className="p-8 text-center border-dashed border-2 rounded-xl text-muted-foreground flex flex-col items-center">
+                   <Settings className="w-8 h-8 opacity-20 mb-2" />
+                   Không tìm thấy Endpoint Configuration. (Nếu bạn vừa cập nhật kiến trúc, hãy chạy script Seeding).
+                 </div>
+              )}
             </div>
           )}
           
