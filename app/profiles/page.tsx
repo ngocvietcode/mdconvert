@@ -998,7 +998,7 @@ function ProfileEndpointCard({
                  onClick={() => setIsProcessorsOpen(!isProcessorsOpen)}
                >
                   <ChevronDown className={`w-4 h-4 transition-transform ${isProcessorsOpen ? '' : '-rotate-90'}`} />
-                  Pipeline Processors ({endpoint.extConnections?.length || 0} Bước)
+                  Pipeline Processors ({(connectionsOverride || endpoint.connections || []).length} Bước)
                   {connectionsOverride && connectionsOverride.length > 0 && (
                     <span className="text-[10px] font-bold uppercase tracking-wider bg-teal-100 text-teal-700 dark:bg-teal-900/40 dark:text-teal-300 px-2 py-0.5 rounded-sm ml-1">
                       Routing Override
@@ -1008,6 +1008,13 @@ function ProfileEndpointCard({
                
                {isProcessorsOpen && (
                  <>
+                 <div className="mb-4 bg-muted/40 border border-muted-foreground/20 rounded-lg p-3 text-xs text-muted-foreground leading-relaxed flex gap-2 items-start">
+                    <PlugZap className="w-4 h-4 text-violet-500 shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-foreground flex items-center gap-1"><Code className="w-3.5 h-3.5" /> Hướng dẫn Mapping Variable: </strong>
+                      Mỗi bước trong pipeline sẽ tự động nhận kết quả từ bước liền trước đó. Tại <strong>Prompt Override</strong> của bước tiếp theo, bạn chỉ cần sử dụng biến <code className="bg-muted px-1 py-0.5 rounded border border-border/50 font-semibold">{`{{input_content}}`}</code> để chèn dữ liệu đầu vào.
+                    </div>
+                 </div>
                  <div className="space-y-4 mb-4">
                   {(connectionsOverride || endpoint.connections || []).map((slug: string, idx: number, arr: string[]) => {
                     const cData = allConnectors.find((c: any) => c.slug === slug);
