@@ -1,143 +1,106 @@
-# mdconvert
+# 🏗️ DUGate (Document Understanding API Gateway)
 
-**Transform Word & PDF to AI-ready Markdown with image descriptions**
+> **Transforming unstructured documents into intelligent, actionable data with a unified API.**
 
 [![License: AGPL-3.0](https://img.shields.io/badge/License-AGPL--3.0-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
-A self-hosted tool that transforms `.docx` and `.pdf` files into clean Markdown optimized for AI agents, Claude Projects, and Claude Code. Images are extracted and described by AI vision — no manual work needed.
+DUGate (formerly *mdconvert*) is a powerful, self-hosted Document Understanding API Gateway. It abstracts the complexity of working with OCR, LLMs, and parsing engines (Pandoc, Ghostscript) into **6 simple, expressive API endpoints**. 
+
+Whether you need to extract data from invoices, compliance-check a contract, or redact sensitive PII, DUGate provides an asynchronous, scalable, and profile-driven architecture to handle it.
 
 ---
 
-![Home page](docs/screenshots/Home%20page.png)
-![Settings page](docs/screenshots/Setting%20page.png)
+## ✨ Key Features
+
+- **6 Core Endpoints** — Replaces dozens of messy endpoints with a clean, unified structure (`ingest`, `extract`, `analyze`, `transform`, `generate`, `compare`).
+- **Profile-Driven Architecture** — Admins can enforce business rules, switch LLM models, or inject system prompts invisibly per API Key. Clients never have to change their code!
+- **Asynchronous Pipeline Engine** — Handles large documents seamlessly via a `202 Accepted` + Polling (or Webhook) pattern.
+- **Multiple AI Backends** — Natively routes to Google Gemini, OpenAI (GPT-4o), Anthropic (Claude), or even custom external APIs.
+- **Built-in Mock Services** — Develop and run E2E tests against a dedicated mock HTTP service without burning real AI tokens.
+- **Visual Gateway UI** — Included web dashboards to intuitively test endpoints, manage API profiles, and audit processing logs.
 
 ---
 
-## Features
+## 🚀 The 6 Core APIs
 
-- **DOCX flow** — Pandoc extracts structure + images → AI Vision describes each image → outputs `full.md` (with image descriptions) + `text-only.md`
-- **PDF flow** — Ghostscript renders pages → AI Vision reads content → outputs `text-only.md`
-- **Batch upload** — transform multiple files in one go
-- **Multi AI provider** — Gemini, OpenAI, Anthropic — switchable via the UI settings page, no redeploy needed
-- **Image compression** — Sharp resizes images (max 1600px, 80% quality) before sending to AI
-- **PDF compression presets** — screen / ebook / printer / prepress via Ghostscript
-- **Preview & edit** — inline Markdown editor with live preview before downloading
-- **Auto cleanup** — files deleted after 24h to protect privacy
-- **Self-hosted** — your data never leaves your server
-- **Bilingual prompts** — English and Vietnamese AI prompt presets
+Instead of rigid endpoints, DUGate uses **action parameters** to adapt to thousands of use cases:
 
----
+| Endpoint | Purpose | Sub-cases |
+|---|---|---|
+| `POST /api/v1/ingest` | Parse, OCR, and digitize documents. | `parse`, `ocr`, `digitize`, `split` |
+| `POST /api/v1/extract` | Pull structured JSON from forms & docs. | `invoice`, `contract`, `id-card`, `receipt`, `table`, `custom` |
+| `POST /api/v1/analyze` | Evaluate, fact-check, and classify content. | `classify`, `sentiment`, `compliance`, `fact-check`, `quality`, `risk`, `summarize-eval` |
+| `POST /api/v1/transform` | Convert formats, translate, or redact PII. | `convert`, `translate`, `rewrite`, `redact`, `template` |
+| `POST /api/v1/generate` | Create new content (summaries, QA, emails). | `summary`, `qa`, `outline`, `report`, `email`, `minutes` |
+| `POST /api/v1/compare` | Semantic or text comparisons between files. | `diff`, `semantic`, `version` |
 
-## How It Works
-
-```
-DOCX flow:
-  .docx → Pandoc → extract text + images → Sharp compress → Gemini/OpenAI/Anthropic Vision
-        → full.md (text + image descriptions) + text-only.md + images/
-
-PDF flow:
-  .pdf → Ghostscript compress → Gemini/OpenAI/Anthropic Vision (page by page)
-       → text-only.md
-```
-
-| Output file | Content |
-|---|---|
-| `full.md` | Text + AI-generated image descriptions (DOCX only) |
-| `text-only.md` | Clean text, no images |
-| `images/` | Extracted + compressed image files (DOCX only) |
+*For full parameter lists and JSON structures, refer to the [Integration Guide](docs/DU_INTEGRATION_GUIDE.md).*
 
 ---
 
-## Quick Start
+## ⚡ Quick Start
 
-### Docker (recommended)
+### 🐳 Docker (Recommended)
+
+The easiest way to get DUGate running along with its PostgreSQL database and mock services.
 
 ```bash
-git clone https://github.com/nhannguyen09/mdconvert.git
-cd mdconvert
+git clone https://github.com/ngocvietcode/mdconvert.git dugate
+cd dugate
 cp .env.example .env
-# Edit .env: set DATABASE_URL, NEXTAUTH_SECRET, ENCRYPTION_KEY
+
+# Edit .env to set DATABASE_URL, NEXTAUTH_SECRET, and your AI API Keys
 docker compose up -d
-# Open http://localhost:2023/setup to create your admin account
 ```
 
-### Manual
+### 💻 Local Development
+
+Prerequisites: `pandoc`, `ghostscript`, `Node.js 20+`.
 
 ```bash
-# Prerequisites
-brew install pandoc ghostscript   # macOS
-# Ubuntu: sudo apt install pandoc ghostscript
-
-git clone https://github.com/nhannguyen09/mdconvert.git
-cd mdconvert
 npm install
 cp .env.example .env
-# Edit .env (see Configuration below)
 
-npx prisma migrate deploy
+# Setup your Postgres Database locally, then run:
+npx prisma generate
+npx prisma db push
+npx prisma db seed
+
 npm run dev
-# Open http://localhost:2023/setup
+# Access the Gateway UI at http://localhost:2023
 ```
 
 ---
 
-## Configuration
+## 📖 Documentation & Architecture
 
-Copy `.env.example` to `.env` and fill in:
+Dive deeper into the design philosophy and client integration instructions:
 
-| Variable | Description |
-|---|---|
-| `DATABASE_URL` | PostgreSQL connection string |
-| `NEXTAUTH_SECRET` | Random string ≥ 32 chars |
-| `NEXTAUTH_URL` | Your app URL (e.g. `http://localhost:2023`) |
-| `GEMINI_API_KEY` | Google AI Studio key (optional — can be set in UI) |
-| `ENCRYPTION_KEY` | AES-256 key, exactly 32 chars |
-| `UPLOAD_DIR` | Upload directory (default: `./uploads`) |
-| `OUTPUT_DIR` | Output directory (default: `./outputs`) |
-
-### AI Providers
-
-API keys can be entered directly in the **Settings** page — no restart needed. Keys are encrypted at rest with AES-256.
-
-| Provider | Models |
-|---|---|
-| Google Gemini | gemini-1.5-flash, gemini-1.5-pro |
-| OpenAI | gpt-4o, gpt-4o-mini |
-| Anthropic | claude-3-5-sonnet, claude-3-haiku |
+- **[API Design Proposal](docs/API_DESIGN_PROPOSAL.md)** — Architectural overview, endpoint philosophy, and request/response lifecycles.
+- **[Integration & Admin Guide](docs/DU_INTEGRATION_GUIDE.md)** — Comprehensive guide on API parameter usage, Async polling patterns, and Profile configuration for Admins.
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | Next.js 14, TypeScript, Tailwind CSS |
-| Backend | Next.js API Routes, Prisma ORM |
-| Database | PostgreSQL |
-| DOCX parsing | Pandoc (CLI) |
-| PDF rendering | Ghostscript (CLI) |
-| Image processing | Sharp (npm) |
-| AI Vision | Gemini / OpenAI / Anthropic (configurable) |
-| Auth | NextAuth.js |
+- **Core**: Next.js 14 (App Router), TypeScript, NextAuth.js
+- **Database**: PostgreSQL with Prisma ORM
+- **Engines**: 
+  - `Pandoc` (DOCX structure parsing)
+  - `Ghostscript` (PDF rendering & compression)
+  - `Sharp` (Image optimization)
+- **AI Integration**: Official SDKs for Gemini, OpenAI, Claude.
 
 ---
 
-## Self-Hosting
+## 🤝 Contributing
 
-See [docs/SELF-HOSTING.md](docs/SELF-HOSTING.md) for detailed guides on Docker, VPS (Ubuntu), and Vercel deployment.
-
----
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for details on setting up the developer environment and submitting pull requests.
 
 ---
 
-## License
+## 📄 License
 
-[AGPL-3.0](LICENSE) — free to use and self-host; modifications must be open-sourced under the same license.
+[AGPL-3.0](LICENSE) — Free to use and self-host. Modifications must be open-sourced under the same license. 
 
----
-
-> Built with ❤️ by [NhanNguyenSharing](https://nhannguyensharing.com) | Powered by Pandoc + AI Vision
+> *Built to give developers total control over Document AI workflows.*
