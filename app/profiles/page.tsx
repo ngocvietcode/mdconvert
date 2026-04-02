@@ -4,7 +4,7 @@ import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import {
   Loader2, CheckCircle, Plus, Copy,
-  Settings, Save, Key, ChevronRight, ChevronDown, FileText, PlugZap, Trash2, Code, FlaskConical, Zap, XCircle
+  Settings, Save, Key, ChevronRight, ChevronDown, FileText, PlugZap, Trash2, Code, FlaskConical, Zap, XCircle, GripVertical, X
 } from 'lucide-react';
 
 interface ApiKey {
@@ -381,7 +381,7 @@ function ProfileEndpointCard({
 
   // Connection Routing Override
   const [connectionsOverride, setConnectionsOverride] = useState<string[] | null>(endpoint.connectionsOverride || null);
-  const [allConnectors, setAllConnectors] = useState<{id: string; slug: string; name: string}[]>([]);
+  const [allConnectors, setAllConnectors] = useState<{id: string; slug: string; name: string; defaultPrompt?: string}[]>([]);
 
   // Test Endpoint Modal State
   const [showTestModal, setShowTestModal] = useState(false);
@@ -413,6 +413,29 @@ function ProfileEndpointCard({
       })
       .catch(() => {});
   }, []);
+
+  const moveConnection = (idx: number, dir: 1 | -1) => {
+    const list = connectionsOverride ? [...connectionsOverride] : [...(endpoint.connections || [])];
+    const item = list.splice(idx, 1)[0];
+    list.splice(idx + dir, 0, item);
+    setConnectionsOverride(list);
+  };
+
+  const removeConnection = (idx: number) => {
+    const list = connectionsOverride ? [...connectionsOverride] : [...(endpoint.connections || [])];
+    list.splice(idx, 1);
+    setConnectionsOverride(list);
+  };
+
+  const addConnection = (slug: string) => {
+    const list = connectionsOverride ? [...connectionsOverride] : [...(endpoint.connections || [])];
+    list.push(slug);
+    setConnectionsOverride(list);
+  };
+
+  const resetToDefaultConnections = () => {
+    setConnectionsOverride(null);
+  };
 
   // Reset expanded states when switching to a different client profile
   useEffect(() => {
@@ -985,121 +1008,151 @@ function ProfileEndpointCard({
                
                {isProcessorsOpen && (
                  <>
-                 {/* Connection Routing Override */}
-                 <div className="mb-4 p-4 bg-teal-50/50 dark:bg-teal-950/20 border border-teal-200 dark:border-teal-900/50 rounded-xl">
-                   <label className="text-xs font-bold text-teal-700 dark:text-teal-400 uppercase tracking-wider flex items-center gap-2 mb-2">
-                     <PlugZap className="w-4 h-4" /> Connection Routing Override
-                   </label>
-                   <p className="text-xs text-teal-600/80 dark:text-teal-400/60 mb-3">
-                     Chọn connector khác cho profile này. Để trống = dùng connector mặc định từ Registry (không ảnh hưởng profile khác).
-                   </p>
-                   <select
-                     value={connectionsOverride?.[0] || ''}
-                     onChange={(e) => {
-                       const val = e.target.value;
-                       setConnectionsOverride(val ? [val] : null);
-                     }}
-                     className="input-field text-sm font-mono py-2 border-teal-300 dark:border-teal-800 focus:ring-teal-500/30"
-                   >
-                     <option value="">— Dùng mặc định: [{endpoint.connections?.join(', ')}] —</option>
-                     {allConnectors.filter(c => c.slug !== endpoint.connections?.[0]).map((c) => (
-                       <option key={c.slug} value={c.slug}>{c.name} ({c.slug})</option>
-                     ))}
-                   </select>
-                   {connectionsOverride && connectionsOverride.length > 0 && (
-                     <div className="mt-2 flex items-center gap-2">
-                       <span className="text-xs font-mono bg-teal-100 dark:bg-teal-900/50 text-teal-800 dark:text-teal-300 px-2 py-1 rounded">
-                         Override: {connectionsOverride.join(' → ')}
-                       </span>
-                       <button
-                         onClick={() => setConnectionsOverride(null)}
-                         className="text-xs text-red-500 hover:text-red-700 font-medium"
-                       >
-                         Reset
-                       </button>
-                     </div>
-                   )}
-                 </div>
-                 
-                 <div className="space-y-4">
-                 {endpoint.extConnections?.map((conn: any, idx: number) => {
-                   const overrideValue = extOverridesState[conn.connectionId];
-                   const isOverridden = overrideValue !== null && overrideValue !== undefined;
-                   
-                   return (
-                     <div key={conn.connectionId} className="flex flex-col">
-                       {/* Arrow pointing down between steps */}
-                       {idx > 0 && (
-                          <div className="flex justify-center -mt-2 mb-2">
-                             <div className="w-px h-6 bg-border"></div>
-                          </div>
-                       )}
-                       
-                       <div className="bg-background rounded-xl border border-border shadow-sm overflow-hidden">
-                         <div className="bg-muted/50 px-4 py-3 border-b border-border flex flex-col sm:flex-row justify-between sm:items-center gap-3">
-                           <div className="flex items-center gap-2 text-sm font-medium flex-wrap">
-                             <span className="bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300 w-5 h-5 rounded flex items-center justify-center text-[11px] font-bold shrink-0">
-                               {idx + 1}
-                             </span>
-                             <PlugZap className="w-4 h-4 text-violet-500 shrink-0" />
-                             <span className="font-bold">{conn.name}</span>
-                             <span className="text-[10px] bg-background border px-1.5 py-0.5 rounded text-muted-foreground">{conn.slug}</span>
-                             {isOverridden && (
-                                <span className="text-[10px] font-bold uppercase tracking-wider bg-violet-100 text-violet-700 px-2 py-0.5 rounded-sm ml-2">
-                                  Custom Active
-                                </span>
-                             )}
+                 <div className="space-y-4 mb-4">
+                  {(connectionsOverride || endpoint.connections || []).map((slug: string, idx: number, arr: string[]) => {
+                    const cData = allConnectors.find((c: any) => c.slug === slug);
+                    if (!cData) return null;
+                    
+                    const connId = cData.id;
+                    const overrideValue = extOverridesState[connId];
+                    const isOverridden = overrideValue !== null && overrideValue !== undefined;
+                    
+                    return (
+                      <div key={`${connId}-${idx}`} className="flex flex-col">
+                        {idx > 0 && (
+                           <div className="flex justify-center -mt-2 mb-2">
+                              <div className="w-px h-6 bg-border"></div>
                            </div>
-                           
-                           <button 
-                              onClick={() => {
-                                setExtOverridesState(prev => ({
-                                  ...prev,
-                                  [conn.connectionId]: isOverridden ? null : conn.defaultPrompt
-                                }));
-                              }}
-                              className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors shrink-0 ${
-                                isOverridden 
-                                  ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/70' 
-                                  : 'bg-background border border-border text-foreground hover:bg-muted font-medium'
-                              }`}
-                           >
-                              {isOverridden ? 'Khôi phục Default Prompt' : 'Tùy chỉnh Prompt'}
-                           </button>
-                         </div>
-                         
-                         <div className="p-4">
-                           {isOverridden ? (
-                             <div className="space-y-2 animate-in fade-in zoom-in-95 duration-200">
-                               <label className="text-xs font-bold flex items-center gap-1 text-violet-600 dark:text-violet-400">
-                                 Prompt Override
-                               </label>
-                               <textarea
-                                 value={overrideValue ?? ''}
-                                 onChange={(e) => setExtOverridesState(prev => ({ ...prev, [conn.connectionId]: e.target.value }))}
-                                 className="w-full text-sm font-mono p-3 rounded-lg border border-violet-200 dark:border-violet-900 focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 bg-violet-50/10 dark:bg-violet-950/20 outline-none leading-relaxed shadow-inner min-h-[140px]"
-                                 placeholder="Nhập prompt override cho bước này..."
-                               />
-                             </div>
-                           ) : (
-                             <div className="space-y-2">
-                               <label className="text-xs font-medium text-muted-foreground">Default Prompt (Quy định tại Connection)</label>
-                               <pre className="text-xs text-muted-foreground font-mono bg-muted/30 p-3 rounded-lg border whitespace-pre-wrap overflow-x-auto max-h-[150px] overflow-y-auto">
-                                 {conn.defaultPrompt}
-                               </pre>
-                             </div>
-                           )}
-                         </div>
-                       </div>
-                     </div>
-                   );
-                 })}
-               {(!endpoint.extConnections || endpoint.extConnections.length === 0) && (
-                   <p className="text-sm text-muted-foreground p-6 text-center border rounded-xl bg-background border-dashed">
-                     Endpoint này xử lý Local hoặc qua các Local Processors nội bộ, không có External API Pipeline nào.
-                   </p>
-                 )}
-               </div>
+                        )}
+                        
+                        <div className={`bg-background rounded-xl border ${connectionsOverride ? 'border-teal-300 dark:border-teal-800' : 'border-border opacity-90'} shadow-sm overflow-hidden`}>
+                          <div className="bg-muted/50 px-4 py-3 border-b border-border flex flex-col xl:flex-row justify-between xl:items-center gap-3">
+                            <div className="flex items-center gap-2 text-sm font-medium flex-wrap">
+                              <GripVertical className="w-4 h-4 text-muted-foreground/50 flex-shrink-0 cursor-grab" />
+                              <span className="bg-teal-100 text-teal-700 dark:bg-teal-900/50 dark:text-teal-400 w-5 h-5 rounded flex items-center justify-center text-[11px] font-bold shrink-0">
+                                {idx + 1}
+                              </span>
+                              <PlugZap className="w-4 h-4 text-violet-500 shrink-0" />
+                              <span className="font-bold">{cData.name}</span>
+                              <span className="text-[10px] bg-background border px-1.5 py-0.5 rounded text-muted-foreground">{cData.slug}</span>
+                              {isOverridden && (
+                                 <span className="text-[10px] font-bold uppercase tracking-wider bg-violet-100 text-violet-700 px-2 py-0.5 rounded-sm ml-2">
+                                   Custom Override
+                                 </span>
+                              )}
+                            </div>
+                            
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <button
+                                onClick={() => moveConnection(idx, -1)}
+                                disabled={idx === 0}
+                                className="p-1.5 rounded-lg border border-transparent hover:border-border hover:bg-muted disabled:opacity-30 text-muted-foreground transition-colors"
+                                title="Di chuyển lên"
+                              >▲</button>
+                              <button
+                                onClick={() => moveConnection(idx, 1)}
+                                disabled={idx === arr.length - 1}
+                                className="p-1.5 rounded-lg border border-transparent hover:border-border hover:bg-muted disabled:opacity-30 text-muted-foreground transition-colors"
+                                title="Di chuyển xuống"
+                              >▼</button>
+                              
+                              <div className="w-px h-4 bg-border mx-1 hidden sm:block"></div>
+                              
+                              <button 
+                                 onClick={() => {
+                                   setExtOverridesState(prev => ({
+                                     ...prev,
+                                     [connId]: isOverridden ? null : (cData.defaultPrompt || null)
+                                   }));
+                                 }}
+                                 className={`text-xs font-semibold px-3 py-1.5 rounded-md transition-colors shrink-0 ${
+                                   isOverridden 
+                                     ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-400 hover:bg-amber-200 dark:hover:bg-amber-900/70' 
+                                     : 'bg-background border border-border text-foreground hover:bg-muted font-medium'
+                                 }`}
+                              >
+                                 {isOverridden ? 'Bỏ Custom Prompt' : 'Tùy chỉnh Prompt'}
+                              </button>
+                              
+                              <button
+                                onClick={() => removeConnection(idx)}
+                                className="p-1.5 ml-1 rounded-lg border border-transparent hover:border-red-200 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 transition-colors"
+                                title="Xoá Connector Này"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+                          
+                          <div className="p-4">
+                            {isOverridden ? (
+                              <div className="space-y-2 animate-in fade-in zoom-in-95 duration-200">
+                                <label className="text-xs font-bold flex items-center gap-1 text-violet-600 dark:text-violet-400">
+                                  Prompt Override Content <span className="font-normal text-muted-foreground mr-1">— Mapping output:</span> <code className="bg-muted px-1.5 py-0.5 rounded text-foreground">{`{{input_content}}`}</code>
+                                </label>
+                                <textarea
+                                  value={overrideValue ?? ''}
+                                  onChange={(e) => setExtOverridesState(prev => ({ ...prev, [connId]: e.target.value }))}
+                                  className="w-full text-sm font-mono p-3 rounded-lg border border-violet-200 dark:border-violet-900 focus:ring-2 focus:ring-violet-500/30 focus:border-violet-500 bg-violet-50/10 dark:bg-violet-950/20 outline-none leading-relaxed shadow-inner min-h-[140px]"
+                                  placeholder="Nhập prompt override cho bước này (sử dụng biến {{input_content}} để ghép với dữ liệu đầu ra từ bước trước)..."
+                                />
+                                <div className="bg-muted p-3 mt-3 rounded-lg border border-border">
+                                  <details>
+                                    <summary className="text-xs font-semibold text-muted-foreground cursor-pointer outline-none w-fit hover:underline">Xem Default Prompt gốc (Tham khảo)</summary>
+                                    <pre className="mt-3 text-[10px] text-muted-foreground whitespace-pre-wrap font-mono p-3 bg-background border border-border rounded opacity-70">
+                                      {cData.defaultPrompt}
+                                    </pre>
+                                  </details>
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="space-y-2">
+                                <label className="text-xs font-medium text-muted-foreground">Default Prompt (Quy định tại System)</label>
+                                <pre className="text-xs text-muted-foreground font-mono bg-muted/30 p-3 rounded-lg border whitespace-pre-wrap overflow-x-auto max-h-[150px] overflow-y-auto outline-none cursor-text">
+                                  {cData.defaultPrompt}
+                                </pre>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                {((connectionsOverride || endpoint.connections || []).length === 0) && (
+                    <p className="text-sm text-muted-foreground p-6 text-center border rounded-xl bg-background border-dashed">
+                      Endpoint này xử lý Local hoặc qua các Local Processors nội bộ, không có External API Pipeline nào.
+                    </p>
+                  )}
+                </div>
+                
+                {/* Add connector dropdown */}
+                <div className="mt-4 pt-4 border-t border-border/50">
+                  <details className="group relative">
+                    <summary className="inline-flex items-center gap-1.5 px-4 py-2 text-sm font-bold text-teal-700 bg-teal-100/50 hover:bg-teal-200/50 dark:text-teal-300 dark:bg-teal-900/30 dark:hover:bg-teal-800/40 rounded-lg cursor-pointer transition-colors list-none border border-teal-200/50 dark:border-teal-800/50">
+                      <Plus className="w-4 h-4" /> Thêm Connector Để Nối Tiếp Chain
+                    </summary>
+                    <div className="absolute left-0 mt-2 z-10 w-72 max-h-60 overflow-y-auto bg-card border border-border rounded-xl shadow-lg p-2">
+                      <p className="text-[10px] font-bold uppercase text-muted-foreground mb-2 px-2">Chọn System Connector</p>
+                      {allConnectors.map(conn => (
+                        <button
+                          key={conn.slug}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            addConnection(conn.slug);
+                            e.currentTarget.closest('details')?.removeAttribute('open');
+                          }}
+                          className="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-muted transition-colors flex items-center gap-2"
+                        >
+                          <PlugZap className="w-3.5 h-3.5 text-teal-500 shrink-0" />
+                          <div className="flex flex-col truncate">
+                            <span className="text-sm font-medium text-foreground truncate">{conn.name}</span>
+                            <span className="font-mono text-[10px] text-muted-foreground truncate">{conn.slug}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  </details>
+                </div>
                </>
                )}
             </div>
