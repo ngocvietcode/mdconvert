@@ -1,6 +1,6 @@
 # AI Providers
 
-dugate supports three AI Vision providers. You can switch between them from the **Settings** page â€” no server restart needed.
+dugate supports three AI Vision providers. You can switch between them from the **Settings** page — no server restart needed.
 
 ## Supported Providers
 
@@ -42,13 +42,13 @@ Keys set via environment variable (`GEMINI_API_KEY`) take precedence over UI-ent
 4. Click **Save**
 5. Test the connection with the **Test** button
 
-Changes take effect immediately â€” ongoing transformations are not affected.
+Changes take effect immediately — ongoing transformations are not affected.
 
 ## Custom Prompts
 
 You can customize the prompt sent to the AI in Settings. Two presets are available:
 
-- **English** â€” outputs image descriptions and Markdown in English
-- **Vietnamese** â€” outputs in Vietnamese (`tiáº¿ng Viá»‡t`)
+- **English** — outputs image descriptions and Markdown in English
+- **Vietnamese** — outputs in Vietnamese (`tiếng Việt`)
 
 Or write your own prompt for domain-specific terminology.

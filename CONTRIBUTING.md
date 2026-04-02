@@ -18,15 +18,15 @@ Prerequisites: Node.js 20+, PostgreSQL, Pandoc, Ghostscript.
 
 ## Code Style
 
-- **TypeScript strict** â€” no `any`, no implicit types
-- **`lib/`** â€” all business logic (converters, AI calls, compression, cleanup)
-- **`app/api/`** â€” HTTP routes only, thin handlers, delegate to `lib/`
-- **`components/`** â€” UI components, no business logic
-- Keep PRs focused â€” one feature or fix per PR
+- **TypeScript strict** — no `any`, no implicit types
+- **`lib/`** — all business logic (converters, AI calls, compression, cleanup)
+- **`app/api/`** — HTTP routes only, thin handlers, delegate to `lib/`
+- **`components/`** — UI components, no business logic
+- Keep PRs focused — one feature or fix per PR
 
 ## PR Process
 
-1. Fork â†’ create a feature branch (`feat/your-feature` or `fix/your-bug`)
+1. Fork → create a feature branch (`feat/your-feature` or `fix/your-bug`)
 2. Make changes, test locally
 3. Describe what changed and why in the PR description
 4. Open PR against `main`
@@ -41,4 +41,4 @@ Open an issue using the [bug report template](.github/ISSUE_TEMPLATE/bug_report.
 
 ## Feature Requests
 
-Open an issue using the [feature request template](.github/ISSUE_TEMPLATE/feature_request.md). Describe your use case first â€” not just the solution.
+Open an issue using the [feature request template](.github/ISSUE_TEMPLATE/feature_request.md). Describe your use case first — not just the solution.

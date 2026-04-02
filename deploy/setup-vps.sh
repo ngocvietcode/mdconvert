@@ -1,16 +1,16 @@
 #!/bin/bash
-# setup-vps.sh â€” run once on a fresh VPS
+# setup-vps.sh — run once on a fresh VPS
 # SSH into your VPS, then run: bash setup-vps.sh
 # Requirements: Node 20+, PM2, Pandoc, Ghostscript installed
 
 set -e
 
-# â”€â”€â”€ Configure these â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─── Configure these ─────────────────────────────────────────────────────────
 APP_DIR="${APP_DIR:-/var/www/dugate}"
 PM2_NAME="${PM2_NAME:-dugate}"
 REPO="${REPO:-https://github.com/nhannguyen09/dugate.git}"
 DOMAIN="${DOMAIN:-your-domain.com}"
-# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ─────────────────────────────────────────────────────────────────────────────
 
 echo "=== Create app directory ==="
 mkdir -p "$APP_DIR"

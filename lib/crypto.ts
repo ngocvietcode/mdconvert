@@ -1,6 +1,6 @@
 // lib/crypto.ts
 // AES-256-GCM encrypt/decrypt cho ai_api_key
-// Key láº¥y tá»« NEXTAUTH_SECRET (Ä‘Ã£ cÃ³ trong .env)
+// Key lấy từ NEXTAUTH_SECRET (đã có trong .env)
 
 import crypto from 'crypto';
 
@@ -10,7 +10,7 @@ const TAG_LENGTH = 16;
 
 function getEncryptionKey(): Buffer {
   const secret = process.env.NEXTAUTH_SECRET || process.env.ENCRYPTION_KEY || 'default_local_insecure_secret_key_dugate';
-  // Derive 32-byte key tá»« secret báº±ng SHA-256
+  // Derive 32-byte key từ secret bằng SHA-256
   return crypto.createHash('sha256').update(secret).digest();
 }
 
@@ -32,7 +32,7 @@ export function encrypt(plaintext: string): string {
 export function decrypt(ciphertext: string): string {
   const key = getEncryptionKey();
   const parts = ciphertext.split(':');
-  if (parts.length !== 3) throw new Error('Äá»‹nh dáº¡ng ciphertext khÃ´ng há»£p lá»‡');
+  if (parts.length !== 3) throw new Error('Định dạng ciphertext không hợp lệ');
 
   const [ivHex, tagHex, encryptedHex] = parts;
   const iv = Buffer.from(ivHex, 'hex');
@@ -45,7 +45,7 @@ export function decrypt(ciphertext: string): string {
   return decipher.update(encrypted).toString('utf8') + decipher.final('utf8');
 }
 
-// Mask API key cho display: "AIza...xxxx" (giá»¯ 4 Ä‘áº§u + 4 cuá»‘i)
+// Mask API key cho display: "AIza...xxxx" (giữ 4 đầu + 4 cuối)
 export function maskApiKey(key: string): string {
   if (!key || key.length <= 8) return '****';
   return `${key.slice(0, 4)}...${key.slice(-4)}`;

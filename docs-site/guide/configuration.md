@@ -7,7 +7,7 @@ Copy `.env.example` to `.env` and fill in:
 | Variable | Required | Description |
 |---|---|---|
 | `DATABASE_URL` | Yes | PostgreSQL connection string, e.g. `postgresql://user:pass@localhost:5432/dugate` |
-| `NEXTAUTH_SECRET` | Yes | Random string â‰¥ 32 chars. Generate: `openssl rand -base64 32` |
+| `NEXTAUTH_SECRET` | Yes | Random string ≥ 32 chars. Generate: `openssl rand -base64 32` |
 | `NEXTAUTH_URL` | Yes | Your app URL, e.g. `http://localhost:2023` |
 | `ENCRYPTION_KEY` | Yes | Exactly 32 characters. Used to encrypt API keys in DB |
 | `GEMINI_API_KEY` | No | Google AI Studio key. Can also be set in the Settings UI |
@@ -51,7 +51,7 @@ You can customize the prompt in **Settings** or choose a preset:
 | Preset | Language |
 |---|---|
 | English (default) | English output |
-| Vietnamese | Vietnamese output (tiáº¿ng Viá»‡t) |
+| Vietnamese | Vietnamese output (tiếng Việt) |
 
 ## Auto Cleanup
 

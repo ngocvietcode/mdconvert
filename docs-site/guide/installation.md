@@ -9,7 +9,7 @@ git clone https://github.com/nhannguyen09/dugate.git
 cd dugate
 
 cp .env.example .env
-# Edit .env â€” set DATABASE_URL, NEXTAUTH_SECRET, ENCRYPTION_KEY, NEXTAUTH_URL
+# Edit .env — set DATABASE_URL, NEXTAUTH_SECRET, ENCRYPTION_KEY, NEXTAUTH_URL
 
 docker compose up -d
 ```
@@ -26,7 +26,7 @@ docker compose up -d --build
 
 ---
 
-## Option 2: VPS â€” Ubuntu 22.04
+## Option 2: VPS — Ubuntu 22.04
 
 ### 1. Install dependencies
 

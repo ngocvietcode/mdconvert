@@ -1,54 +1,54 @@
-# Giá»›i thiá»‡u
+# Giới thiệu
 
-## dugate lÃ  gÃ¬?
+## dugate là gì?
 
-**dugate** lÃ  cÃ´ng cá»¥ web tá»± host giÃºp chuyá»ƒn Ä‘á»•i file `.docx` vÃ  `.pdf` thÃ nh Markdown sáº¡ch, tá»‘i Æ°u cho AI agents, Claude Projects vÃ  Claude Code.
+**dugate** là công cụ web tự host giúp chuyển đổi file `.docx` và `.pdf` thành Markdown sạch, tối ưu cho AI agents, Claude Projects và Claude Code.
 
-Khi Ä‘Æ°a tÃ i liá»‡u vÃ o AI, vÄƒn báº£n thuáº§n thÆ°á»ng khÃ´ng Ä‘á»§ â€” Ä‘áº·c biá»‡t vá»›i SOP, hÆ°á»›ng dáº«n váº­n hÃ nh, hay tÃ i liá»‡u cÃ³ nhiá»u hÃ¬nh áº£nh. dugate giáº£i quyáº¿t Ä‘iá»u nÃ y báº±ng cÃ¡ch:
+Khi đưa tài liệu vào AI, văn bản thuần thường không đủ — đặc biệt với SOP, hướng dẫn vận hành, hay tài liệu có nhiều hình ảnh. dugate giải quyết điều này bằng cách:
 
-1. TrÃ­ch xuáº¥t hÃ¬nh áº£nh tá»« file Word
-2. Gá»­i tá»«ng hÃ¬nh Ä‘áº¿n AI Vision (Gemini / OpenAI / Anthropic)
-3. Táº¡o mÃ´ táº£ chi tiáº¿t cho tá»«ng hÃ¬nh
-4. GhÃ©p táº¥t cáº£ thÃ nh file Markdown hoÃ n chá»‰nh
+1. Trích xuất hình ảnh từ file Word
+2. Gửi từng hình đến AI Vision (Gemini / OpenAI / Anthropic)
+3. Tạo mô tả chi tiết cho từng hình
+4. Ghép tất cả thành file Markdown hoàn chỉnh
 
-Káº¿t quáº£ lÃ  `full.md` mÃ  AI cÃ³ thá»ƒ hiá»ƒu Ä‘áº§y Ä‘á»§ â€” ká»ƒ cáº£ pháº§n hÃ¬nh áº£nh.
+Kết quả là `full.md` mà AI có thể hiểu đầy đủ — kể cả phần hình ảnh.
 
-## TrÆ°á»ng há»£p sá»­ dá»¥ng
+## Trường hợp sử dụng
 
-| TrÆ°á»ng há»£p | dugate giÃºp gÃ¬ |
+| Trường hợp | dugate giúp gì |
 |---|---|
-| **Claude Projects** | Upload SOP dáº¡ng Markdown â€” Claude hiá»ƒu Ä‘Æ°á»£c cáº£ hÃ¬nh áº£nh |
-| **Claude Code** | ÄÆ°a `full.md` vÃ o project Ä‘á»ƒ Claude Code cÃ³ Ä‘á»§ context |
-| **AI Agents** | Feed Markdown cÃ³ cáº¥u trÃºc thay vÃ¬ PDF thÃ´ |
-| **Knowledge base** | Transform tÃ i liá»‡u cÃ´ng ty sang Markdown Ä‘á»ƒ index |
-| **BiÃªn dá»‹ch / chá»‰nh sá»­a** | Sá»­a Markdown trá»±c tiáº¿p trÃªn editor tÃ­ch há»£p |
+| **Claude Projects** | Upload SOP dạng Markdown — Claude hiểu được cả hình ảnh |
+| **Claude Code** | Đưa `full.md` vào project để Claude Code có đủ context |
+| **AI Agents** | Feed Markdown có cấu trúc thay vì PDF thô |
+| **Knowledge base** | Transform tài liệu công ty sang Markdown để index |
+| **Biên dịch / chỉnh sửa** | Sửa Markdown trực tiếp trên editor tích hợp |
 
-## Hai luá»“ng xá»­ lÃ½
+## Hai luồng xử lý
 
 ```
-DOCX â†’ Pandoc â†’ trÃ­ch xuáº¥t text + hÃ¬nh â†’ AI Vision â†’ full.md + text-only.md + images/
+DOCX → Pandoc → trích xuất text + hình → AI Vision → full.md + text-only.md + images/
 
-PDF  â†’ Ghostscript â†’ nÃ©n â†’ AI Vision (tá»«ng trang) â†’ text-only.md
+PDF  → Ghostscript → nén → AI Vision (từng trang) → text-only.md
 ```
 
-## TÃ­nh nÄƒng chÃ­nh
+## Tính năng chính
 
-- **Upload hÃ ng loáº¡t** â€” transform nhiá»u file trong má»™t phiÃªn
-- **Äa AI provider** â€” Gemini, OpenAI, Anthropic â€” chuyá»ƒn Ä‘á»•i ngay trÃªn UI
-- **Editor tÃ­ch há»£p** â€” preview vÃ  sá»­a Markdown trÆ°á»›c khi táº£i vá»
-- **Tá»± Ä‘á»™ng dá»n dáº¹p** â€” file bá»‹ xÃ³a sau 24 giá»
-- **Tá»± host** â€” dá»¯ liá»‡u á»Ÿ láº¡i server cá»§a báº¡n
-- **Prompt song ngá»¯** â€” preset tiáº¿ng Anh vÃ  tiáº¿ng Viá»‡t
+- **Upload hàng loạt** — transform nhiều file trong một phiên
+- **Đa AI provider** — Gemini, OpenAI, Anthropic — chuyển đổi ngay trên UI
+- **Editor tích hợp** — preview và sửa Markdown trước khi tải về
+- **Tự động dọn dẹp** — file bị xóa sau 24 giờ
+- **Tự host** — dữ liệu ở lại server của bạn
+- **Prompt song ngữ** — preset tiếng Anh và tiếng Việt
 
 ## Tech Stack
 
-| Layer | CÃ´ng nghá»‡ |
+| Layer | Công nghệ |
 |---|---|
 | Frontend | Next.js 14, TypeScript, Tailwind CSS |
 | Backend | Next.js API Routes, Prisma ORM |
 | Database | PostgreSQL |
-| Xá»­ lÃ½ DOCX | Pandoc (CLI) |
-| Xá»­ lÃ½ PDF | Ghostscript (CLI) |
-| NÃ©n áº£nh | Sharp |
+| Xử lý DOCX | Pandoc (CLI) |
+| Xử lý PDF | Ghostscript (CLI) |
+| Nén ảnh | Sharp |
 | AI Vision | Gemini / OpenAI / Anthropic |
-| XÃ¡c thá»±c | NextAuth.js |
+| Xác thực | NextAuth.js |
