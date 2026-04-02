@@ -1,13 +1,16 @@
 import { DocumentParser } from './interface';
 import { ExcelParser } from './excel-parser';
 import { WordParser } from './word-parser';
-import { PdfParser } from './pdf-parser';
+// NOTE: PdfParser (pdf-parse/pdfjs-dist) is excluded from internal parsers because
+// pdfjs-dist requires browser canvas APIs (DOMMatrix, Path2D, ImageData) that
+// cannot be safely polyfilled in Node.js server environments.
+// PDF files are routed directly to the External API connector instead.
 
 export class ParserFactory {
   private static parsers: DocumentParser[] = [
     new ExcelParser(),
     new WordParser(),
-    new PdfParser()
+    // PdfParser intentionally omitted — PDFs → External API
   ];
 
   /**
