@@ -91,6 +91,7 @@ export default function HeaderNav() {
             API Connections
           </Link>
           
+          
           <div className="w-[1px] h-6 bg-border mx-2" />
           
           <ThemeToggle />

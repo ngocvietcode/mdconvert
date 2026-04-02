@@ -157,20 +157,20 @@ export async function runEndpoint(
       }
     }
 
-    // ── 9. Build pipeline (per-profile routing support) ────────────────────
-    // Ưu tiên connections override từ ProfileEndpoint (nếu admin đã cấu hình)
-    // Fallback về connections mặc định từ SERVICE_REGISTRY
+    // ── 9. Build pipeline (per-profile routing) ────────────────────────────
+    // Priority: Per-Client (ProfileEndpoint.connectionsOverride) > Registry Default (code)
     let connectionSlugs: string[];
     if (profileEndpoint?.connectionsOverride) {
       try {
         connectionSlugs = JSON.parse(profileEndpoint.connectionsOverride);
-        logger.info(`[PROFILE_ROUTING] Using override connections: [${connectionSlugs.join(', ')}]`);
+        logger.info(`[ROUTING] Per-client override: [${connectionSlugs.join(', ')}]`);
       } catch {
-        logger.warn(`[PROFILE_ROUTING] Invalid connectionsOverride JSON, falling back to defaults`);
+        logger.warn(`[ROUTING] Invalid connectionsOverride JSON, falling back to registry`);
         connectionSlugs = subCase.connections;
       }
     } else {
       connectionSlugs = subCase.connections;
+      logger.info(`[ROUTING] Registry default: [${connectionSlugs.join(', ')}]`);
     }
 
     const pipeline = connectionSlugs.map((connSlug) => ({

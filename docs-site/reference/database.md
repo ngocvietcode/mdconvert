@@ -6,7 +6,7 @@
 |---|---|
 | Engine | PostgreSQL |
 | ORM | Prisma |
-| DB name | `mdconvert` (configurable via `DATABASE_URL`) |
+| DB name | `dugate` (configurable via `DATABASE_URL`) |
 
 ---
 
@@ -39,7 +39,7 @@
 | Column | Type | Nullable | Default | Description |
 |---|---|---|---|---|
 | `id` | String (UUID) | No | `uuid()` | Primary key |
-| `conversionId` | String | No | | FK → Transformation.id |
+| `conversionId` | String | No | | FK â†’ Transformation.id |
 | `imageName` | String | No | | Image filename |
 | `imagePath` | String | No | | Path to image file |
 | `description` | String | No | | Detailed AI description |
@@ -55,8 +55,8 @@ Managed by NextAuth.js Prisma adapter. Stores `email`, `password` (bcrypt), and 
 ## Relationships
 
 ```
-User       1 ──── * Transformation
-Transformation 1 ──── * ImageDescription
+User       1 â”€â”€â”€â”€ * Transformation
+Transformation 1 â”€â”€â”€â”€ * ImageDescription
 ```
 
 ---
@@ -64,9 +64,9 @@ Transformation 1 ──── * ImageDescription
 ## Status Flow
 
 ```
-pending → compressing → processing → completed
-    │          │             │
-    └──────────┴─────────────┴──→ failed
+pending â†’ compressing â†’ processing â†’ completed
+    â”‚          â”‚             â”‚
+    â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â†’ failed
 ```
 
 | Status | Meaning |
@@ -74,8 +74,8 @@ pending → compressing → processing → completed
 | `pending` | File uploaded, waiting to process |
 | `compressing` | Ghostscript (PDF) or Sharp (DOCX images) running |
 | `processing` | AI Vision API call in progress |
-| `completed` | Done — output files ready |
-| `failed` | Error at any step — see `errorMessage` |
+| `completed` | Done â€” output files ready |
+| `failed` | Error at any step â€” see `errorMessage` |
 
 ---
 

@@ -2,7 +2,7 @@ const fs = require('fs/promises');
 const path = require('path');
 
 async function renameAndMove() {
-  const root = 'd:\\Jobs\\scratch\\mdconvert';
+  const root = 'd:\\Jobs\\scratch\\dugate';
   
   const moves = [
     ['lib/converters', 'lib/transformers'],

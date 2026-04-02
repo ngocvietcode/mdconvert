@@ -203,6 +203,22 @@ model ProfileEndpoint {
 }
 
 // ═══════════════════════════════════════════════
+// Endpoint Connection Config — Global Admin Override
+// Admin cấu hình connector chain cho endpoint mà không cần sửa code
+// ═══════════════════════════════════════════════
+model EndpointConnectionConfig {
+  id            String   @id @default(uuid())
+  endpointSlug  String   @unique              // "extract:invoice", "compare:diff"
+  connections   String   @db.Text             // JSON array: ["ext-data-extractor", "ext-invoice-validator"]
+  description   String?  @db.Text             // Ghi chú admin
+  enabled       Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([endpointSlug])
+}
+
+// ═══════════════════════════════════════════════
 // App Settings (key-value store)
 // ═══════════════════════════════════════════════
 model AppSetting {

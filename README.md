@@ -1,4 +1,4 @@
-# 🏗️ DUGate (Document Understanding API Gateway)
+# ðŸ—ï¸ DUGate (Document Understanding API Gateway)
 
 > **Transforming unstructured documents into intelligent, actionable data with a unified API.**
 
@@ -10,18 +10,18 @@ Whether you need to extract data from invoices, compliance-check a contract, or 
 
 ---
 
-## ✨ Key Features
+## âœ¨ Key Features
 
-- **6 Core API Endpoints** — Consolidates fragmented legacy integrations into a clean, unified architectural standard (`ingest`, `extract`, `analyze`, `transform`, `generate`, `compare`).
-- **Deep Profile-Driven Override Routing** — Administrators can enforce specific internal LLM models, system context, or overwrite connection setups entirely *per API Key*. Client applications interact transparently without requiring codebase modifications.
-- **Visual Pipeline Chain Builder** — An intuitive **Visual Interface in the Profiles Dashboard** allowing Administrators to securely orchestrate, re-order, and inject *Contextual Prompts* using variable mapping (`{{input_content}}`) dynamically across executing connectors.
-- **Asynchronous Pipeline Engine** — Processes large-scale documents seamlessly via an enterprise-grade asynchronous worker queue (`202 Accepted` + Polling/Webhook pattern).
-- **Multiple AI Backends** — Natively routes downward into Google Gemini, OpenAI, Claude, or modular internal APIs to comply with strict data locality policies.
-- **Standalone Mock Service Engine** — Safely develop and run high-volume Automated Tests against a dedicated internal HTTP Mock Service locally, optimizing integration efforts without incurring external AI token costs.
-- **Diagnostic Logging & Auditing** — Includes complete cURL reconstruction and dynamic log extraction for comprehensive tracing and rapid incident resolution.
+- **6 Core API Endpoints** â€” Consolidates fragmented legacy integrations into a clean, unified architectural standard (`ingest`, `extract`, `analyze`, `transform`, `generate`, `compare`).
+- **Deep Profile-Driven Override Routing** â€” Administrators can enforce specific internal LLM models, system context, or overwrite connection setups entirely *per API Key*. Client applications interact transparently without requiring codebase modifications.
+- **Visual Pipeline Chain Builder** â€” An intuitive **Visual Interface in the Profiles Dashboard** allowing Administrators to securely orchestrate, re-order, and inject *Contextual Prompts* using variable mapping (`{{input_content}}`) dynamically across executing connectors.
+- **Asynchronous Pipeline Engine** â€” Processes large-scale documents seamlessly via an enterprise-grade asynchronous worker queue (`202 Accepted` + Polling/Webhook pattern).
+- **Multiple AI Backends** â€” Natively routes downward into Google Gemini, OpenAI, Claude, or modular internal APIs to comply with strict data locality policies.
+- **Standalone Mock Service Engine** â€” Safely develop and run high-volume Automated Tests against a dedicated internal HTTP Mock Service locally, optimizing integration efforts without incurring external AI token costs.
+- **Diagnostic Logging & Auditing** â€” Includes complete cURL reconstruction and dynamic log extraction for comprehensive tracing and rapid incident resolution.
 ---
 
-## 🚀 The 6 Core APIs
+## ðŸš€ The 6 Core APIs
 
 Instead of rigid endpoints, DUGate uses **action parameters** to adapt to thousands of use cases:
 
@@ -38,14 +38,14 @@ Instead of rigid endpoints, DUGate uses **action parameters** to adapt to thousa
 
 ---
 
-## ⚡ Quick Start
+## âš¡ Quick Start
 
-### 🐳 Docker (Recommended)
+### ðŸ³ Docker (Recommended)
 
 The easiest way to get DUGate running along with its PostgreSQL database and mock services.
 
 ```bash
-git clone https://github.com/ngocvietcode/mdconvert.git dugate
+git clone https://github.com/ngocvietcode/dugate.git dugate
 cd dugate
 cp .env.example .env
 
@@ -53,7 +53,7 @@ cp .env.example .env
 docker compose up -d
 ```
 
-### 💻 Local Development
+### ðŸ’» Local Development
 
 Prerequisites: `pandoc`, `ghostscript`, `Node.js 20+`.
 
@@ -72,17 +72,17 @@ npm run dev
 
 ---
 
-## 📖 Documentation & Architecture
+## ðŸ“– Documentation & Architecture
 
 Dive deeper into the design philosophy, client integration, and the powerful admin configuration interfaces:
 
-- **[Admin Multi-Connector Guide](docs/admin-multi-connector-guide.md)** — Guide on routing overrides, visual dynamic pipeline chain building, and connector mapping (ex: output mapping into subsequent prompts).
-- **[API Design Proposal](docs/API_DESIGN_PROPOSAL.md)** — Architectural overview, endpoint philosophy, and request/response lifecycles.
-- **[Integration & Admin Guide](docs/DU_INTEGRATION_GUIDE.md)** — Comprehensive guide on API parameter usage, Async polling patterns, and basic Profile configuration.
+- **[Admin Multi-Connector Guide](docs/admin-multi-connector-guide.md)** â€” Guide on routing overrides, visual dynamic pipeline chain building, and connector mapping (ex: output mapping into subsequent prompts).
+- **[API Design Proposal](docs/API_DESIGN_PROPOSAL.md)** â€” Architectural overview, endpoint philosophy, and request/response lifecycles.
+- **[Integration & Admin Guide](docs/DU_INTEGRATION_GUIDE.md)** â€” Comprehensive guide on API parameter usage, Async polling patterns, and basic Profile configuration.
 
 ---
 
-## 🛠️ Tech Stack
+## ðŸ› ï¸ Tech Stack
 
 - **Core**: Next.js 14 (App Router), TypeScript, NextAuth.js
 - **Database**: PostgreSQL with Prisma ORM
@@ -94,15 +94,15 @@ Dive deeper into the design philosophy, client integration, and the powerful adm
 
 ---
 
-## 🤝 Contributing
+## ðŸ¤ Contributing
 
 We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for details on setting up the developer environment and submitting pull requests.
 
 ---
 
-## 📄 License
+## ðŸ“„ License
 
-[AGPL-3.0](LICENSE) — Free to use and self-host. Modifications must be open-sourced under the same license. 
+[AGPL-3.0](LICENSE) â€” Free to use and self-host. Modifications must be open-sourced under the same license. 
 
 > *Built to give developers total control over Document AI workflows.*
 
@@ -110,49 +110,49 @@ We welcome contributions! Please see our [CONTRIBUTING.md](CONTRIBUTING.md) for 
 
 ---
 
-# 🇻🇳 DUGate (Vietnamese Version)
+# ðŸ‡»ðŸ‡³ DUGate (Vietnamese Version)
 
-> **Giải pháp kiến trúc cổng trung gian API (Gateway) vận hành quy chuẩn, trích xuất và biến đổi tài liệu phi cấu trúc thành dữ liệu thông minh an toàn và tin cậy.**
+> **Giáº£i phÃ¡p kiáº¿n trÃºc cá»•ng trung gian API (Gateway) váº­n hÃ nh quy chuáº©n, trÃ­ch xuáº¥t vÃ  biáº¿n Ä‘á»•i tÃ i liá»‡u phi cáº¥u trÃºc thÃ nh dá»¯ liá»‡u thÃ´ng minh an toÃ n vÃ  tin cáº­y.**
 
-DUGate là một hệ thống nội bộ đóng vai trò là API Gateway chuyên biệt cho các bài toán Phân tích Tài liệu (Document Understanding). Thay vì để các ứng dụng nghiệp vụ gọi trực tiếp và phân mảnh đến các dịch vụ OCR, LLM hay công cụ parse file khác nhau, DUGate quy chuẩn hóa toàn bộ sự phức tạp đó vào **6 API tiêu chuẩn cấp doanh nghiệp**.
+DUGate lÃ  má»™t há»‡ thá»‘ng ná»™i bá»™ Ä‘Ã³ng vai trÃ² lÃ  API Gateway chuyÃªn biá»‡t cho cÃ¡c bÃ i toÃ¡n PhÃ¢n tÃ­ch TÃ i liá»‡u (Document Understanding). Thay vÃ¬ Ä‘á»ƒ cÃ¡c á»©ng dá»¥ng nghiá»‡p vá»¥ gá»i trá»±c tiáº¿p vÃ  phÃ¢n máº£nh Ä‘áº¿n cÃ¡c dá»‹ch vá»¥ OCR, LLM hay cÃ´ng cá»¥ parse file khÃ¡c nhau, DUGate quy chuáº©n hÃ³a toÃ n bá»™ sá»± phá»©c táº¡p Ä‘Ã³ vÃ o **6 API tiÃªu chuáº©n cáº¥p doanh nghiá»‡p**.
 
-Hệ thống được thiết kế đặc biệt phù hợp cho các quy trình nghiệp vụ yêu cầu tính bảo mật, chính xác và nhất quán cao như: trích xuất thông tin hoá đơn chứng từ, đánh giá rủi ro hợp đồng, hay kiểm duyệt tài liệu. Điều này được đảm bảo thông qua cơ chế định tuyến chặt chẽ theo Hồ sơ thiết lập (Profile-Driven).
+Há»‡ thá»‘ng Ä‘Æ°á»£c thiáº¿t káº¿ Ä‘áº·c biá»‡t phÃ¹ há»£p cho cÃ¡c quy trÃ¬nh nghiá»‡p vá»¥ yÃªu cáº§u tÃ­nh báº£o máº­t, chÃ­nh xÃ¡c vÃ  nháº¥t quÃ¡n cao nhÆ°: trÃ­ch xuáº¥t thÃ´ng tin hoÃ¡ Ä‘Æ¡n chá»©ng tá»«, Ä‘Ã¡nh giÃ¡ rá»§i ro há»£p Ä‘á»“ng, hay kiá»ƒm duyá»‡t tÃ i liá»‡u. Äiá»u nÃ y Ä‘Æ°á»£c Ä‘áº£m báº£o thÃ´ng qua cÆ¡ cháº¿ Ä‘á»‹nh tuyáº¿n cháº·t cháº½ theo Há»“ sÆ¡ thiáº¿t láº­p (Profile-Driven).
 
-## ✨ Năng Lực Cốt Lõi
+## âœ¨ NÄƒng Lá»±c Cá»‘t LÃµi
 
-- **6 Endpoint Xử Lý Tập Trung** — Quy chuẩn hoá hàng trăm nghiệp vụ tài liệu thông thường thành cấu trúc API đồng nhất (`ingest`, `extract`, `analyze`, `transform`, `generate`, `compare`).
-- **Override Routing Dựa Trên Profile** — Quản trị viên hệ thống có thẩm quyền can thiệp vào việc định tuyến LLM model, thay đổi System Prompt, hoặc cấu hình lại các luồng xử lý Pipeline theo từng API Key. Đảm bảo ứng dụng Client giao tiếp một cách minh bạch mà không cần can thiệp mã nguồn.
-- **Chuỗi Nghiệp Vụ Trực Quan (Pipeline Builder)** — Giao diện Dashboard cung cấp khả năng thiết lập luồng xử lý chuyên sâu, cho phép phân bổ và ánh xạ Prompt động cho các dịch vụ liên tiếp nhau (vd: kết quả nghiệp vụ A sẽ đóng vai trò Dữ liệu đầu vào cho Prompt nghiệp vụ B thông qua biến `{{input_content}}`).
-- **Cơ Chế Xử Lý Bất Đồng Bộ (Async Engine)** — Đáp ứng khả năng khai thác khối lượng tài liệu lớn thông qua cơ chế phản hồi `202 Accepted` kết hợp Webhook/Polling, đảm bảo tính ổn định của hệ thống lõi.
-- **Hỗ Trợ Mở Rộng Đa Nền Tảng AI** — Hỗ trợ kết nối an toàn đến Google Gemini, OpenAI, Claude, hoặc tích hợp trực tiếp vào các mô hình AI/Dịch vụ nội bộ của doanh nghiệp nhằm đáp ứng tiêu chuẩn nội bộ.
-- **Hệ Thống Dịch Vụ Giả Lập (Mock Service)** — Môi trường Mock HTTP độc lập hỗ trợ kỹ sư vận hành các kịch bản kiểm thử tự động (Automated/E2E Test) trên quy mô lớn, tối ưu hóa triệt để chi phí vận hành API.
-- **Giám Sát Định Tuyến & Truy Vết (Diagnostic)** — Gateway tự động khởi tạo và lưu vết mã cURL nội bộ mỗi khi thực hiện giao tiếp với dịch vụ bên thứ 3, hỗ trợ công tác kiểm toán (audit) và phát hiện lỗi nhanh chóng.
+- **6 Endpoint Xá»­ LÃ½ Táº­p Trung** â€” Quy chuáº©n hoÃ¡ hÃ ng trÄƒm nghiá»‡p vá»¥ tÃ i liá»‡u thÃ´ng thÆ°á»ng thÃ nh cáº¥u trÃºc API Ä‘á»“ng nháº¥t (`ingest`, `extract`, `analyze`, `transform`, `generate`, `compare`).
+- **Override Routing Dá»±a TrÃªn Profile** â€” Quáº£n trá»‹ viÃªn há»‡ thá»‘ng cÃ³ tháº©m quyá»n can thiá»‡p vÃ o viá»‡c Ä‘á»‹nh tuyáº¿n LLM model, thay Ä‘á»•i System Prompt, hoáº·c cáº¥u hÃ¬nh láº¡i cÃ¡c luá»“ng xá»­ lÃ½ Pipeline theo tá»«ng API Key. Äáº£m báº£o á»©ng dá»¥ng Client giao tiáº¿p má»™t cÃ¡ch minh báº¡ch mÃ  khÃ´ng cáº§n can thiá»‡p mÃ£ nguá»“n.
+- **Chuá»—i Nghiá»‡p Vá»¥ Trá»±c Quan (Pipeline Builder)** â€” Giao diá»‡n Dashboard cung cáº¥p kháº£ nÄƒng thiáº¿t láº­p luá»“ng xá»­ lÃ½ chuyÃªn sÃ¢u, cho phÃ©p phÃ¢n bá»• vÃ  Ã¡nh xáº¡ Prompt Ä‘á»™ng cho cÃ¡c dá»‹ch vá»¥ liÃªn tiáº¿p nhau (vd: káº¿t quáº£ nghiá»‡p vá»¥ A sáº½ Ä‘Ã³ng vai trÃ² Dá»¯ liá»‡u Ä‘áº§u vÃ o cho Prompt nghiá»‡p vá»¥ B thÃ´ng qua biáº¿n `{{input_content}}`).
+- **CÆ¡ Cháº¿ Xá»­ LÃ½ Báº¥t Äá»“ng Bá»™ (Async Engine)** â€” ÄÃ¡p á»©ng kháº£ nÄƒng khai thÃ¡c khá»‘i lÆ°á»£ng tÃ i liá»‡u lá»›n thÃ´ng qua cÆ¡ cháº¿ pháº£n há»“i `202 Accepted` káº¿t há»£p Webhook/Polling, Ä‘áº£m báº£o tÃ­nh á»•n Ä‘á»‹nh cá»§a há»‡ thá»‘ng lÃµi.
+- **Há»— Trá»£ Má»Ÿ Rá»™ng Äa Ná»n Táº£ng AI** â€” Há»— trá»£ káº¿t ná»‘i an toÃ n Ä‘áº¿n Google Gemini, OpenAI, Claude, hoáº·c tÃ­ch há»£p trá»±c tiáº¿p vÃ o cÃ¡c mÃ´ hÃ¬nh AI/Dá»‹ch vá»¥ ná»™i bá»™ cá»§a doanh nghiá»‡p nháº±m Ä‘Ã¡p á»©ng tiÃªu chuáº©n ná»™i bá»™.
+- **Há»‡ Thá»‘ng Dá»‹ch Vá»¥ Giáº£ Láº­p (Mock Service)** â€” MÃ´i trÆ°á»ng Mock HTTP Ä‘á»™c láº­p há»— trá»£ ká»¹ sÆ° váº­n hÃ nh cÃ¡c ká»‹ch báº£n kiá»ƒm thá»­ tá»± Ä‘á»™ng (Automated/E2E Test) trÃªn quy mÃ´ lá»›n, tá»‘i Æ°u hÃ³a triá»‡t Ä‘á»ƒ chi phÃ­ váº­n hÃ nh API.
+- **GiÃ¡m SÃ¡t Äá»‹nh Tuyáº¿n & Truy Váº¿t (Diagnostic)** â€” Gateway tá»± Ä‘á»™ng khá»Ÿi táº¡o vÃ  lÆ°u váº¿t mÃ£ cURL ná»™i bá»™ má»—i khi thá»±c hiá»‡n giao tiáº¿p vá»›i dá»‹ch vá»¥ bÃªn thá»© 3, há»— trá»£ cÃ´ng tÃ¡c kiá»ƒm toÃ¡n (audit) vÃ  phÃ¡t hiá»‡n lá»—i nhanh chÃ³ng.
 
-## 🚀 6 API Chính
+## ðŸš€ 6 API ChÃ­nh
 
-| Endpoint | Chức Năng | Các bài toán (Sub-cases) |
+| Endpoint | Chá»©c NÄƒng | CÃ¡c bÃ i toÃ¡n (Sub-cases) |
 |---|---|---|
-| `POST /api/v1/ingest` | Đọc, OCR, và số hoá văn bản thô. | `parse`, `ocr`, `digitize`, `split` |
-| `POST /api/v1/extract` | Trích xuất JSON từ các biểu mẫu. | `invoice`, `contract`, `id-card`, `receipt`, `table`, `custom` |
-| `POST /api/v1/analyze` | Đánh giá, fact-check, phân loại. | `classify`, `sentiment`, `compliance`, `fact-check`, `quality`, `risk`, `summarize-eval` |
-| `POST /api/v1/transform` | Chuyển đổi định dạng, dịch thuật, mã hoá PII. | `convert`, `translate`, `rewrite`, `redact`, `template` |
-| `POST /api/v1/generate` | Sinh nội dung mới (summary, báo cáo). | `summary`, `qa`, `outline`, `report`, `email`, `minutes` |
-| `POST /api/v1/compare` | So sánh văn bản hoặc tìm khác biệt. | `diff`, `semantic`, `version` |
+| `POST /api/v1/ingest` | Äá»c, OCR, vÃ  sá»‘ hoÃ¡ vÄƒn báº£n thÃ´. | `parse`, `ocr`, `digitize`, `split` |
+| `POST /api/v1/extract` | TrÃ­ch xuáº¥t JSON tá»« cÃ¡c biá»ƒu máº«u. | `invoice`, `contract`, `id-card`, `receipt`, `table`, `custom` |
+| `POST /api/v1/analyze` | ÄÃ¡nh giÃ¡, fact-check, phÃ¢n loáº¡i. | `classify`, `sentiment`, `compliance`, `fact-check`, `quality`, `risk`, `summarize-eval` |
+| `POST /api/v1/transform` | Chuyá»ƒn Ä‘á»•i Ä‘á»‹nh dáº¡ng, dá»‹ch thuáº­t, mÃ£ hoÃ¡ PII. | `convert`, `translate`, `rewrite`, `redact`, `template` |
+| `POST /api/v1/generate` | Sinh ná»™i dung má»›i (summary, bÃ¡o cÃ¡o). | `summary`, `qa`, `outline`, `report`, `email`, `minutes` |
+| `POST /api/v1/compare` | So sÃ¡nh vÄƒn báº£n hoáº·c tÃ¬m khÃ¡c biá»‡t. | `diff`, `semantic`, `version` |
 
-*Chi tiết vui lòng tham khảo [Integration Guide](docs/DU_INTEGRATION_GUIDE.md).*
+*Chi tiáº¿t vui lÃ²ng tham kháº£o [Integration Guide](docs/DU_INTEGRATION_GUIDE.md).*
 
-## ⚡ Bắt Đầu Nhanh
+## âš¡ Báº¯t Äáº§u Nhanh
 
-### 🐳 Docker (Khuyên dùng)
+### ðŸ³ Docker (KhuyÃªn dÃ¹ng)
 
-Cách nhanh nhất để chạy DUGate kèm PostgreSQL và Mock Service:
+CÃ¡ch nhanh nháº¥t Ä‘á»ƒ cháº¡y DUGate kÃ¨m PostgreSQL vÃ  Mock Service:
 
 ```bash
-git clone https://github.com/ngocvietcode/mdconvert.git dugate
+git clone https://github.com/ngocvietcode/dugate.git dugate
 cd dugate
 cp .env.example .env
 
-# Sửa lại file .env với thông tin CSDL và API Key của bạn
+# Sá»­a láº¡i file .env vá»›i thÃ´ng tin CSDL vÃ  API Key cá»§a báº¡n
 docker compose up -d
 ```
-Bạn sẽ truy cập được trang quản trị Gateway UI tại `http://localhost:2023`.
+Báº¡n sáº½ truy cáº­p Ä‘Æ°á»£c trang quáº£n trá»‹ Gateway UI táº¡i `http://localhost:2023`.

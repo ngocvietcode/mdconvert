@@ -4,7 +4,7 @@ services:
     ports:
       - "2023:2023"
     environment:
-      DATABASE_URL: postgresql://mdconvert:${DB_PASSWORD}@db:5432/mdconvert
+      DATABASE_URL: postgresql://dugate:${DB_PASSWORD}@db:5432/dugate
       NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
       NEXTAUTH_URL: ${NEXTAUTH_URL:-http://localhost:2023}
       ENCRYPTION_KEY: ${ENCRYPTION_KEY}
@@ -24,13 +24,13 @@ services:
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: mdconvert
+      POSTGRES_USER: dugate
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: mdconvert
+      POSTGRES_DB: dugate
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U mdconvert"]
+      test: ["CMD-SHELL", "pg_isready -U dugate"]
       interval: 5s
       timeout: 5s
       retries: 5

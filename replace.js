@@ -1,7 +1,7 @@
 const fs = require('fs/promises');
 const path = require('path');
 
-const ROOT = 'd:\\Jobs\\scratch\\mdconvert';
+const ROOT = 'd:\\Jobs\\scratch\\dugate';
 const DIRS = ['app', 'lib', 'components', 'prisma', 'docs-site', 'docs', 'CLAUDE.md', 'README.md'];
 
 const REPLACEMENTS = [
@@ -29,8 +29,8 @@ const REPLACEMENTS = [
   [/\bConverters\b/g, 'Transformers'],
   [/\bCONVERTERS\b/g, 'TRANSFORMERS'],
 
-  // Special cases (fixing any mdconvert that was broken)
-  [/\bmdtransform\b/g, 'mdconvert']
+  // Special cases (fixing any dugate that was broken)
+  [/\bmdtransform\b/g, 'dugate']
 ];
 
 async function walk(dir, fileList = []) {
@@ -77,7 +77,7 @@ async function run() {
     }
     
     // Explicit exclusions/fixes
-    modified = modified.replace(/mdtransform/gi, 'mdconvert'); // Restore original mdconvert anywhere
+    modified = modified.replace(/mdtransform/gi, 'dugate'); // Restore original dugate anywhere
 
     if (modified !== content) {
        await fs.writeFile(f, modified, 'utf8');

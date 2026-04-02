@@ -1,22 +1,22 @@
 #!/bin/bash
-# deploy.sh — deploy mdconvert to your VPS
+# deploy.sh â€” deploy dugate to your VPS
 # Run from local: bash deploy/deploy.sh
 # Requires: .env.production exists at project root
 
 set -e
 
-# ─── Configure these for your server ─────────────────────────────────────────
+# â”€â”€â”€ Configure these for your server â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 VPS_IP="${VPS_IP:-your-server-ip}"
 VPS_PORT="${VPS_PORT:-22}"
 VPS_USER="${VPS_USER:-root}"
-APP_DIR="${APP_DIR:-/var/www/mdconvert}"
-PM2_NAME="${PM2_NAME:-mdconvert}"
+APP_DIR="${APP_DIR:-/var/www/dugate}"
+PM2_NAME="${PM2_NAME:-dugate}"
 APP_URL="${APP_URL:-https://your-domain.com}"
-# ─────────────────────────────────────────────────────────────────────────────
+# â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 echo "=== [1/6] Check .env.production ==="
 if [ ! -f ".env.production" ]; then
-  echo "❌ Missing .env.production. Create it before deploying."
+  echo "âŒ Missing .env.production. Create it before deploying."
   exit 1
 fi
 
@@ -57,4 +57,4 @@ pm2 status
 ENDSSH
 
 echo ""
-echo "✅ Deploy complete! $APP_URL"
+echo "âœ… Deploy complete! $APP_URL"

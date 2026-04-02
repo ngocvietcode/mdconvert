@@ -1,69 +1,69 @@
-# Bắt đầu nhanh
+# Báº¯t Ä‘áº§u nhanh
 
-## 1. Lần chạy đầu — Setup Wizard
+## 1. Láº§n cháº¡y Ä‘áº§u â€” Setup Wizard
 
-Sau khi khởi động mdconvert lần đầu, mở:
+Sau khi khá»Ÿi Ä‘á»™ng dugate láº§n Ä‘áº§u, má»Ÿ:
 
 ```
 http://localhost:2023/setup
 ```
 
-Tạo tài khoản admin (email + mật khẩu). Trang này chỉ hiển thị khi chưa có user nào trong database — các lần sau sẽ tự chuyển về trang đăng nhập.
+Táº¡o tÃ i khoáº£n admin (email + máº­t kháº©u). Trang nÃ y chá»‰ hiá»ƒn thá»‹ khi chÆ°a cÃ³ user nÃ o trong database â€” cÃ¡c láº§n sau sáº½ tá»± chuyá»ƒn vá» trang Ä‘Äƒng nháº­p.
 
-## 2. Cấu hình AI Provider
+## 2. Cáº¥u hÃ¬nh AI Provider
 
-Vào **Cài đặt** (`/settings`) và chọn AI provider:
+VÃ o **CÃ i Ä‘áº·t** (`/settings`) vÃ  chá»n AI provider:
 
-| Provider | API key cần thiết |
+| Provider | API key cáº§n thiáº¿t |
 |---|---|
-| Google Gemini | `GEMINI_API_KEY` (hoặc nhập trong UI) |
-| OpenAI | Nhập API key trong Settings |
-| Anthropic | Nhập API key trong Settings |
+| Google Gemini | `GEMINI_API_KEY` (hoáº·c nháº­p trong UI) |
+| OpenAI | Nháº­p API key trong Settings |
+| Anthropic | Nháº­p API key trong Settings |
 
-Key nhập trong UI được mã hóa AES-256 trước khi lưu vào database.
+Key nháº­p trong UI Ä‘Æ°á»£c mÃ£ hÃ³a AES-256 trÆ°á»›c khi lÆ°u vÃ o database.
 
-Bạn có thể tùy chỉnh prompt AI hoặc chọn preset ngôn ngữ (Tiếng Anh / Tiếng Việt).
+Báº¡n cÃ³ thá»ƒ tÃ¹y chá»‰nh prompt AI hoáº·c chá»n preset ngÃ´n ngá»¯ (Tiáº¿ng Anh / Tiáº¿ng Viá»‡t).
 
-## 3. Upload file đầu tiên
+## 3. Upload file Ä‘áº§u tiÃªn
 
-Vào trang chủ (`/`) và:
+VÃ o trang chá»§ (`/`) vÃ :
 
-1. Kéo thả hoặc chọn file `.docx` hoặc `.pdf` (tối đa 100MB)
-2. Với PDF: chọn mức nén (khuyến nghị dùng ebook)
-3. Nhấn **Transform**
+1. KÃ©o tháº£ hoáº·c chá»n file `.docx` hoáº·c `.pdf` (tá»‘i Ä‘a 100MB)
+2. Vá»›i PDF: chá»n má»©c nÃ©n (khuyáº¿n nghá»‹ dÃ¹ng ebook)
+3. Nháº¥n **Transform**
 
-Quá trình transform chạy nền. Trang tự động cập nhật trạng thái.
+QuÃ¡ trÃ¬nh transform cháº¡y ná»n. Trang tá»± Ä‘á»™ng cáº­p nháº­t tráº¡ng thÃ¡i.
 
-## 4. Xem và tải về
+## 4. Xem vÃ  táº£i vá»
 
 Sau khi transform xong:
 
-- **Preview** kết quả Markdown
-- **Sửa** trực tiếp nếu cần
-- **Tải về** ZIP chứa tất cả file output
+- **Preview** káº¿t quáº£ Markdown
+- **Sá»­a** trá»±c tiáº¿p náº¿u cáº§n
+- **Táº£i vá»** ZIP chá»©a táº¥t cáº£ file output
 
 ### Output DOCX
 
 ```
-[tên-file]-YYYYMMDD.zip
-├── [tên-file]-full.md        ← text + mô tả hình ảnh
-├── [tên-file]-text-only.md   ← chỉ text
-└── images/
-    ├── [tên-file]-img-001.png
-    └── ...
+[tÃªn-file]-YYYYMMDD.zip
+â”œâ”€â”€ [tÃªn-file]-full.md        â† text + mÃ´ táº£ hÃ¬nh áº£nh
+â”œâ”€â”€ [tÃªn-file]-text-only.md   â† chá»‰ text
+â””â”€â”€ images/
+    â”œâ”€â”€ [tÃªn-file]-img-001.png
+    â””â”€â”€ ...
 ```
 
 ### Output PDF
 
 ```
-[tên-file]-YYYYMMDD.zip
-└── [tên-file]-text-only.md
+[tÃªn-file]-YYYYMMDD.zip
+â””â”€â”€ [tÃªn-file]-text-only.md
 ```
 
-## 5. Upload hàng loạt
+## 5. Upload hÃ ng loáº¡t
 
-Vào `/batch` để upload nhiều file cùng lúc. Mỗi file được xử lý độc lập và có thể tải về tất cả kết quả trong một ZIP.
+VÃ o `/batch` Ä‘á»ƒ upload nhiá»u file cÃ¹ng lÃºc. Má»—i file Ä‘Æ°á»£c xá»­ lÃ½ Ä‘á»™c láº­p vÃ  cÃ³ thá»ƒ táº£i vá» táº¥t cáº£ káº¿t quáº£ trong má»™t ZIP.
 
-## 6. Lịch sử
+## 6. Lá»‹ch sá»­
 
-Vào `/history` để xem tất cả lần transform trước, tải lại kết quả hoặc xóa.
+VÃ o `/history` Ä‘á»ƒ xem táº¥t cáº£ láº§n transform trÆ°á»›c, táº£i láº¡i káº¿t quáº£ hoáº·c xÃ³a.

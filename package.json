@@ -1,5 +1,5 @@
 {
-  "name": "mdconvert",
+  "name": "dugate",
   "version": "1.0.0",
   "description": "Convert Word & PDF to AI-ready Markdown with image descriptions",
   "private": true,

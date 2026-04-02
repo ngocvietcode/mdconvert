@@ -1,14 +1,14 @@
 # Quick Start
 
-## 1. First Run — Setup Wizard
+## 1. First Run â€” Setup Wizard
 
-After starting mdconvert for the first time, open:
+After starting dugate for the first time, open:
 
 ```
 http://localhost:2023/setup
 ```
 
-Create your admin account (email + password). This page is only visible when no users exist in the database — it redirects to login on subsequent visits.
+Create your admin account (email + password). This page is only visible when no users exist in the database â€” it redirects to login on subsequent visits.
 
 ## 2. Configure AI Provider
 
@@ -46,18 +46,18 @@ Once transformation is complete:
 
 ```
 [filename]-YYYYMMDD.zip
-├── [filename]-full.md        ← text + image descriptions
-├── [filename]-text-only.md   ← text only
-└── images/
-    ├── [filename]-img-001.png
-    └── ...
+â”œâ”€â”€ [filename]-full.md        â† text + image descriptions
+â”œâ”€â”€ [filename]-text-only.md   â† text only
+â””â”€â”€ images/
+    â”œâ”€â”€ [filename]-img-001.png
+    â””â”€â”€ ...
 ```
 
 ### PDF output
 
 ```
 [filename]-YYYYMMDD.zip
-└── [filename]-text-only.md
+â””â”€â”€ [filename]-text-only.md
 ```
 
 ## 5. Batch Upload
