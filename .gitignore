@@ -1,0 +1,17 @@
+node_modules/
+.next/
+.env
+.env.local
+.env.production
+*.key
+*.pem
+uploads/*
+!uploads/.gitkeep
+outputs/*
+!outputs/.gitkeep
+.claude/settings.local.json
+tsconfig.tsbuildinfo
+.DS_Store
+docs-site/node_modules/
+docs-site/.vitepress/dist/
+docs-site/.vitepress/cache/
